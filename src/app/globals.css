@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Provence Concept — Material Design 3 (Expressive)
+   Tonal palette derived from seed #3C8DCC (brand blue)
+   ============================================================ */
+:root {
+  /* Primary (interactive blue, darkened for AA contrast on white) */
+  --primary: #15639e;
+  --on-primary: #ffffff;
+  --primary-container: #cfe5fb;
+  --on-primary-container: #001d34;
+  /* The literal brand blue — for large brand fills / decorative only */
+  --brand: #3c8dcc;
+
+  /* Secondary (calm blue-grey) */
+  --secondary: #4f6276;
+  --on-secondary: #ffffff;
+  --secondary-container: #d6e3f2;
+  --on-secondary-container: #0a1d2b;
+
+  /* Tertiary (warm Provençal sun — used sparingly for accents/badges) */
+  --tertiary: #9a5a3d;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #ffdbc9;
+  --on-tertiary-container: #380d00;
+
+  /* Neutral surfaces (cool white family) */
+  --background: #fbfcfe;
+  --on-background: #1a1c1e;
+  --surface: #fbfcfe;
+  --on-surface: #1a1c1e;
+  --surface-variant: #dee3ea;
+  --on-surface-variant: #42474e;
+  --surface-lowest: #ffffff;
+  --surface-low: #f4f7fb;
+  --surface-container: #eef2f7;
+  --surface-high: #e7edf4;
+  --surface-highest: #e1e9f1;
+  --outline: #72787e;
+  --outline-variant: #c2c7ce;
+
+  /* Error */
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #410002;
+
+  /* Motion */
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --dur-short: 200ms;
+  --dur-medium: 350ms;
+  --dur-long: 500ms;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--on-surface);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Focus — always visible, keyboard accessible */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-5 sm:px-6 lg:px-8;
+  }
+
+  /* MD3 state layer — overlay tint on hover/press */
+  .state {
+    position: relative;
+    isolation: isolate;
+  }
+  .state::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--dur-short) var(--ease-emphasized);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: -1;
+  }
+  .state:hover::after {
+    opacity: 0.06;
+  }
+  .state:active::after {
+    opacity: 0.1;
+  }
+
+  /* MD3 type scale (display/headline via Hanken, the rest via Inter) */
+  .display-lg {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 6vw, 4.25rem);
+    line-height: 1.03;
+    letter-spacing: -0.02em;
+  }
+  .display-md {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.06;
+    letter-spacing: -0.018em;
+  }
+  .headline {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+    line-height: 1.12;
+    letter-spacing: -0.012em;
+  }
+  .title-lg {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+  .eyebrow {
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .price {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes pc-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(-1.2deg); }
+}
+.pc-float { animation: pc-float 7s ease-in-out infinite; }
+
+@keyframes pc-blob {
+  0%, 100% { border-radius: 44% 56% 60% 40% / 52% 44% 56% 48%; }
+  50% { border-radius: 58% 42% 40% 60% / 44% 56% 44% 56%; }
+}
+.pc-blob { animation: pc-blob 14s ease-in-out infinite; }
+
+/* Entrance reveal — pure CSS, only active once JS confirms (.js on <html>).
+   Without JS the rule never matches, so content is visible (SEO + a11y safe). */
+@keyframes pc-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+.reveal { opacity: 1; }
+html.js .reveal {
+  opacity: 0;
+  animation: pc-rise 0.6s cubic-bezier(0.2, 0, 0, 1) both;
+  animation-delay: var(--reveal-delay, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal { opacity: 1 !important; animation: none !important; transform: none !important; }
+}
