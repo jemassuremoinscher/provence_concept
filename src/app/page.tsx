@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Hero } from "@/components/hero";
 import { CategoryCard } from "@/components/category-card";
 import { ProductCard } from "@/components/product-card";
@@ -65,6 +66,35 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* ── Bande fondateur ── */}
+      <div className="founder-band my-0">
+        <div className="shell grid gap-6 py-10 sm:grid-cols-[3px_1fr_1fr] sm:gap-8 sm:py-12">
+          {/* Barre bleue verticale — visible seulement sm+ */}
+          <div className="hidden sm:block rounded-full bg-primary" />
+
+          {/* Citation */}
+          <blockquote className="font-serif text-lg font-normal italic leading-relaxed text-on-surface sm:text-xl">
+            "Il y a des soirs à Dubaï où ce qui manque, c'est une socca
+            brûlante et le bruit du marché de Nice."
+          </blockquote>
+
+          {/* Bio courte */}
+          <div className="flex flex-col justify-center gap-4">
+            <p className="text-sm leading-relaxed text-on-surface-variant">
+              Provence Concept est né d'un Niçois expatrié — des racines au
+              Cours Saleya, l'envie de porter quelque chose qui dit d'où l'on
+              vient. Pas floqué. Brodé.
+            </p>
+            <Link
+              href="/a-propos"
+              className="text-sm font-semibold text-primary hover:underline w-fit"
+            >
+              Lire notre histoire →
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {/* Valeurs — bande façon "store" */}
       <section className="shell mt-24">

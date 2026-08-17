@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
 /* ============================================================
    Provence Concept — Material Design 3 (Expressive)
    Tonal palette derived from seed #3C8DCC (brand blue)
@@ -14,6 +16,8 @@
   --on-primary-container: #001d34;
   /* The literal brand blue — for large brand fills / decorative only */
   --brand: #3c8dcc;
+  --brand-deep: #0e3d6b;
+  --font-serif: 'Lora', Georgia, serif;
 
   /* Secondary (calm blue-grey) */
   --secondary: #4f6276;
@@ -187,4 +191,25 @@ html.js .reveal {
 }
 @media (prefers-reduced-motion: reduce) {
   html.js .reveal { opacity: 1 !important; animation: none !important; transform: none !important; }
+}
+
+/* ---- Trust strip ---- */
+.trust-strip {
+  background: var(--trust-bg, #ebf3fb);
+  border-top: 1px solid var(--trust-border, #cfe5fb);
+  border-bottom: 1px solid var(--trust-border, #cfe5fb);
+}
+
+/* ---- Founder band ---- */
+.founder-band {
+  background: var(--surface-low, #f0eef8);
+  border-top: 1px solid var(--outline-variant, #c1c7ce);
+  border-bottom: 1px solid var(--outline-variant, #c1c7ce);
+}
+
+/* ---- Card serif name ---- */
+.card-name-serif {
+  font-family: var(--font-serif, Georgia, serif);
+  font-weight: 600;
+  line-height: 1.3;
 }
