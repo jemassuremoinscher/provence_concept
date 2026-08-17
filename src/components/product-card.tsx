@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Product } from "@/data/products";
 import { formatPrice } from "@/lib/format";
@@ -14,6 +15,7 @@ const CARD_TINTS: Record<string, string> = {
   "petits-farcis":       "#f0f5ec",
   "caviar-daubergine":   "#f5f0fb",
   "tomates-provencale":  "#fdf0f0",
+  "chi-va-piano":        "#fdf3ee",
 };
 
 export function ProductCard({
@@ -27,15 +29,40 @@ export function ProductCard({
   const soldOut = product.comingSoon;
   const tint = CARD_TINTS[product.slug] ?? "#f3f1fa";
 
+  const [step, setStep] = useState<"idle" | "picking" | "added">("idle");
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  /* Ferme le sélecteur si clic en dehors */
+  useEffect(() => {
+    if (step !== "picking") return;
+    function onClickOutside(e: MouseEvent) {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
+        setStep("idle");
+      }
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [step]);
+
+  function handleAddClick() {
+    if (step === "idle") setStep("picking");
+  }
+
+  function handleSizePick(size: string) {
+    add(product, { size });
+    setStep("added");
+    setTimeout(() => setStep("idle"), 1200);
+  }
+
   return (
     <article className="group relative flex flex-col">
+      {/* Image */}
       <Link
         href={`/produit/${product.slug}`}
         className="relative block aspect-[4/5] w-full overflow-hidden rounded-xl shadow-e1 transition-shadow duration-300 ease-emphasized hover:shadow-e2"
         style={{ background: tint }}
       >
         <ProductImage product={product} priority={priority} />
-
         {product.badge && (
           <span className="absolute left-3 top-3 rounded-full bg-tertiary-container px-3 py-1 text-[0.7rem] font-bold text-on-tertiary-container shadow-e1">
             {product.badge}
@@ -48,15 +75,16 @@ export function ProductCard({
         )}
       </Link>
 
-      <div className="mt-3 flex flex-col gap-1 px-1">
+      {/* Infos */}
+      <div className="mt-3 flex flex-col gap-1 px-1" ref={wrapRef}>
         <Link
           href={`/produit/${product.slug}`}
-          className="card-name-serif text-[1rem] text-on-surface hover:text-primary transition-colors"
+          className="card-name-serif text-[1rem] text-on-surface transition-colors hover:text-primary"
         >
           {product.name}
         </Link>
 
-        <p className="text-sm text-on-surface-variant leading-snug">
+        <p className="text-sm leading-snug text-on-surface-variant">
           {product.tagline}
         </p>
 
@@ -69,16 +97,39 @@ export function ProductCard({
             <span className="text-sm text-on-surface-variant">Prix à venir</span>
           )}
 
-          {!soldOut && (
+          {!soldOut && product.price != null && (
             <button
-              onClick={() => add(product, { size: "M" })}
-              aria-label={`Ajouter ${product.name} au panier`}
-              className="state h-8 rounded-full bg-primary px-4 text-xs font-semibold text-on-primary"
+              onClick={handleAddClick}
+              className={`state h-8 rounded-full px-4 text-xs font-semibold transition-colors ${
+                step === "added"
+                  ? "bg-green-600 text-white"
+                  : "bg-primary text-on-primary"
+              }`}
+              aria-label={
+                step === "picking"
+                  ? "Choisir une taille"
+                  : `Ajouter ${product.name} au panier`
+              }
             >
-              Ajouter
+              {step === "added" ? "Ajouté ✓" : "Ajouter"}
             </button>
           )}
         </div>
+
+        {/* Sélecteur de taille inline */}
+        {step === "picking" && (
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {product.sizes.map((size) => (
+              <button
+                key={size}
+                onClick={() => handleSizePick(size)}
+                className="state h-8 min-w-[36px] rounded-lg border border-outline-variant bg-surface-lowest px-2 text-xs font-medium text-on-surface transition-colors hover:border-primary hover:text-primary"
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </article>
   );

@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Mammouth Group — l'écosystème de marques",
   description:
-    "Mammouth Group est un écosystème d'entreprises fondées par Paul Vuillier — de la Côte d'Azur à Dubaï : assurance, IA, micro-crèches, coaching anglais, voitures et mode brodée.",
+    "Mammouth Group est un écosystème d'entreprises fondées par Paul Vuillier — de la Côte d'Azur à l'Afrique : assurance, IA, micro-crèches, coaching anglais, voitures et mode brodée.",
   alternates: { canonical: "/mammouth-group" },
 };
 
@@ -99,7 +99,7 @@ export default function MammouthGroupPage() {
           </h1>
           <p className="mt-4 max-w-2xl text-lg font-light leading-relaxed text-white/65">
             Un écosystème d'entreprises fondées par Paul Vuillier — de la
-            Côte d'Azur à Dubaï, en passant par l'Afrique et l'Europe.
+            Côte d'Azur à l'Afrique, en passant par l'Europe.
           </p>
         </div>
       </div>
