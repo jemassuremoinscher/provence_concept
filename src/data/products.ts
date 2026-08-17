@@ -1,45 +1,25 @@
-// =============================================================================
-//  PROVENCE CONCEPT — Catalogue (source unique de vérité)
-//  Pour mettre à jour : changez "price" et "images" ci-dessous. Rien d'autre.
-//  - price : prix en euros (number) ou null tant qu'il n'est pas fixé.
-//  - images : tableau de chemins (ex. "/products/barbajuans-1.jpg" dans /public).
-//             Laissez [] pour afficher le visuel de marque temporaire.
-// =============================================================================
-
 export type Category = "t-shirts" | "sweatshirts" | "polos";
-
-export type Colorway = {
-  name: string;
-  hex: string;
-};
+export type Collection = "cuisine" | "italiana";
 
 export type Product = {
   id: string;
   slug: string;
   name: string;
-  category: Category;
-  price: number | null;
-  currency: "EUR";
-  colors: Colorway[];
-  sizes: string[];
-  badge?: "Nouveau" | "Édition limitée";
-  comingSoon?: boolean;
   tagline: string;
   description: string;
-  details: string[];
+  price: number | null;
   images: string[];
+  sizes: string[];
+  colors: { name: string; hex: string }[];
+  category: Category;
+  collection: Collection;
+  badge?: string;
+  comingSoon?: boolean;
+  details: string[];
 };
 
-export const CATEGORIES: { id: Category; label: string; comingSoon?: boolean }[] = [
-  { id: "t-shirts", label: "T-shirts" },
-  { id: "sweatshirts", label: "Sweatshirts", comingSoon: true },
-  { id: "polos", label: "Polos", comingSoon: true },
-];
-
 const SIZES = ["S", "M", "L", "XL", "XXL"];
-
-// Les t-shirts sont blancs ; c'est la broderie (nom de la spécialité) qui change.
-const BLANC: Colorway = { name: "Blanc", hex: "#f4f3ee" };
+const BLANC = { name: "Blanc", hex: "#f4f3ee" };
 
 // Détails communs à la collection t-shirts (modifiable produit par produit).
 const TEE_DETAILS = [
@@ -51,114 +31,152 @@ const TEE_DETAILS = [
 
 export const PRODUCTS: Product[] = [
   {
-    id: "tee-barbajuans",
-    slug: "barbajuans",
-    name: "Barbajuans",
-    category: "t-shirts",
-    price: 34.90,
-    currency: "EUR",
-    colors: [BLANC],
-    sizes: SIZES,
-    badge: "Nouveau",
-    tagline: "Le chausson niçois, brodé sur le cœur.",
-    description:
-      "Les barbajuans, ces petits raviolis frits farcis à la blette et à la brousse qu'on grignote les doigts gras un soir d'été. Broderie discrète, juste pour ceux qui savent.",
-    details: TEE_DETAILS,
-    images: ["/products/barbajuans-1.jpg", "/products/barbajuans-2.jpg"],
-  },
-  {
-    id: "tee-caviar-aubergine",
-    slug: "caviar-daubergine",
-    name: "Caviar d’aubergine",
-    category: "t-shirts",
-    price: 34.90,
-    currency: "EUR",
-    colors: [BLANC],
-    sizes: SIZES,
-    badge: "Nouveau",
-    tagline: "L'apéro provençal, version coton.",
-    description:
-      "Aubergines fondues, ail, huile d'olive : le caviar d'aubergine, c'est le Sud qu'on tartine. Une broderie aubergine sur blanc, sobre et solaire.",
-    details: TEE_DETAILS,
-    images: ["/products/caviar-daubergine-1.jpg", "/products/caviar-daubergine-2.jpg"],
-  },
-  {
-    id: "tee-pan-bagnat",
-    slug: "pan-bagnat",
-    name: "Pan bagnat",
-    category: "t-shirts",
-    price: 34.90,
-    currency: "EUR",
-    colors: [BLANC],
-    sizes: SIZES,
-    tagline: "La salade niçoise qui tient dans un pain.",
-    description:
-      "Thon, œuf, olives, anchois, le tout serré dans un pain rond gorgé d'huile d'olive. Le pan bagnat, c'est midi les pieds dans le sable. Broderie bleu Méditerranée.",
-    details: TEE_DETAILS,
-    images: ["/products/pan-bagnat-1.jpg", "/products/pan-bagnat-2.jpg"],
-  },
-  {
-    id: "tee-petits-farcis",
-    slug: "petits-farcis",
-    name: "Petits farcis",
-    category: "t-shirts",
-    price: 34.90,
-    currency: "EUR",
-    colors: [BLANC],
-    sizes: SIZES,
-    tagline: "Tomates, courgettes, oignons : tout est farci.",
-    description:
-      "Les petits farcis niçois, ces légumes du soleil garnis et passés au four jusqu'à confire. Le plat du dimanche, brodé rouge et vert sur blanc.",
-    details: TEE_DETAILS,
-    images: ["/products/petits-farcis-1.jpg", "/products/petits-farcis-2.jpg"],
-  },
-  {
-    id: "tee-ratatouille",
-    slug: "ratatouille-nicoise",
-    name: "Ratatouille niçoise",
-    category: "t-shirts",
-    price: 34.90,
-    currency: "EUR",
-    colors: [BLANC],
-    sizes: SIZES,
-    badge: "Édition limitée",
-    tagline: "Le mijoté du Sud, fil rouge et vert.",
-    description:
-      "Aubergine, courgette, poivron, tomate : la ratatouille niçoise mijotée à feu doux, celle qui embaume toute la cuisine. Brodée avec gourmandise.",
-    details: TEE_DETAILS,
-    images: ["/products/ratatouille-nicoise-1.jpg", "/products/ratatouille-nicoise-2.jpg"],
-  },
-  {
-    id: "tee-socca-lover",
+    id: "socca-lover",
     slug: "socca-lover",
-    name: "Socca lover",
-    category: "t-shirts",
-    price: 34.90,
-    currency: "EUR",
-    colors: [BLANC],
-    sizes: SIZES,
+    name: "Socca Lover",
     tagline: "Pois chiche, croustillant, pur Nice.",
     description:
       "La socca, cette galette de pois chiche dorée qu'on mange brûlante sur le Cours Saleya. Pour les vrais amoureux du Vieux-Nice : socca lover, brodé vert.",
-    details: TEE_DETAILS,
+    price: 34.90,
     images: ["/products/socca-lover-1.jpg", "/products/socca-lover-2.jpg"],
+    sizes: SIZES,
+    colors: [BLANC],
+    category: "t-shirts",
+    collection: "cuisine",
+    badge: "Nouveau",
+    details: TEE_DETAILS,
   },
   {
-    id: "tee-tomates-provencale",
+    id: "pan-bagnat",
+    slug: "pan-bagnat",
+    name: "Pan bagnat",
+    tagline: "La salade niçoise qui tient dans un pain.",
+    description:
+      "Pan bagnat — pas pain bagnat. Du niçois : pain baigné. Tomates, œuf dur, anchois, olives, huile d'olive. Pas de mayonnaise.",
+    price: 34.90,
+    images: ["/products/pan-bagnat-1.jpg", "/products/pan-bagnat-2.jpg"],
+    sizes: SIZES,
+    colors: [BLANC],
+    category: "t-shirts",
+    collection: "cuisine",
+    badge: "Nouveau",
+    details: TEE_DETAILS,
+  },
+  {
+    id: "ratatouille-nicoise",
+    slug: "ratatouille-nicoise",
+    name: "Ratatouille niçoise",
+    tagline: "Le mijoté du Sud, fil rouge et vert.",
+    description:
+      "Courgette, aubergine, tomate, poivron — chaque légume cuit séparément, puis réuni. La vraie ratatouille niçoise prend son temps.",
+    price: 34.90,
+    images: ["/products/ratatouille-nicoise-1.jpg", "/products/ratatouille-nicoise-2.jpg"],
+    sizes: SIZES,
+    colors: [BLANC],
+    category: "t-shirts",
+    collection: "cuisine",
+    details: TEE_DETAILS,
+  },
+  {
+    id: "barbajuans",
+    slug: "barbajuans",
+    name: "Barbajuans",
+    tagline: "Le chausson niçois, brodé sur le cœur.",
+    description:
+      "Pâte fine, ricotta, blettes, friture dorée. Le barbajuan se mange chaud, les doigts gras, à l'apéro. Pas avec des couverts.",
+    price: 34.90,
+    images: ["/products/barbajuans-1.jpg", "/products/barbajuans-2.jpg"],
+    sizes: SIZES,
+    colors: [BLANC],
+    category: "t-shirts",
+    collection: "cuisine",
+    details: TEE_DETAILS,
+  },
+  {
+    id: "petits-farcis",
+    slug: "petits-farcis",
+    name: "Petits farcis",
+    tagline: "Tomates, courgettes, oignons farcis.",
+    description:
+      "Les légumes du marché, évidés et garnis, confits au four jusqu'à caramélisation. Le plat du dimanche niçois.",
+    price: 34.90,
+    images: ["/products/petits-farcis-1.jpg", "/products/petits-farcis-2.jpg"],
+    sizes: SIZES,
+    colors: [BLANC],
+    category: "t-shirts",
+    collection: "cuisine",
+    details: TEE_DETAILS,
+  },
+  {
+    id: "caviar-daubergine",
+    slug: "caviar-daubergine",
+    name: "Caviar d’aubergine",
+    tagline: "L’apéro provençal, version coton.",
+    description:
+      "Aubergines grillées, ail, huile d'olive, citron. Froid, sur du pain grillé, les jours où il fait trop chaud pour cuisiner autre chose.",
+    price: 34.90,
+    images: ["/products/caviar-daubergine-1.jpg", "/products/caviar-daubergine-2.jpg"],
+    sizes: SIZES,
+    colors: [BLANC],
+    category: "t-shirts",
+    collection: "cuisine",
+    details: TEE_DETAILS,
+  },
+  {
+    id: "tomates-provencale",
     slug: "tomates-provencale",
     name: "Tomates à la provençale",
-    category: "t-shirts",
-    price: 34.90,
-    currency: "EUR",
-    colors: [BLANC],
-    sizes: SIZES,
-    tagline: "Ail, persil, chapelure : le réflexe d'été.",
+    tagline: "Le réflexe d’été, fil rouge.",
     description:
-      "Des tomates coupées, garnies d'ail et de persil, dorées au four jusqu'à confire. Les tomates à la provençale, brodées rouge sur blanc.",
-    details: TEE_DETAILS,
+      "Tomates mûres, ail, persil, chapelure, huile d'olive. Cinq minutes de préparation, un résultat qui sent le Sud.",
+    price: 34.90,
     images: ["/products/tomates-provencale-1.jpg", "/products/tomates-provencale-2.jpg"],
+    sizes: SIZES,
+    colors: [BLANC],
+    category: "t-shirts",
+    collection: "cuisine",
+    details: TEE_DETAILS,
+  },
+  {
+    id: "chi-va-piano",
+    slug: "chi-va-piano",
+    name: "Chi va piano…",
+    tagline: "Chi va piano, non ha la Porsche.",
+    description:
+      "L’adage revisité : celui qui y va doucement n’a pas la Porsche. Un clin d’œil brodé pour ceux qui assument d’aller vite.",
+    price: 34.90,
+    images: [],
+    sizes: SIZES,
+    colors: [BLANC],
+    category: "t-shirts",
+    collection: "italiana",
+    badge: "Nouveau",
+    details: TEE_DETAILS,
   },
 ];
+
+export const CATEGORIES: { id: Category; label: string; comingSoon?: boolean }[] = [
+  { id: "t-shirts", label: "T-shirts" },
+  { id: "sweatshirts", label: "Sweatshirts", comingSoon: true },
+  { id: "polos", label: "Polos", comingSoon: true },
+];
+
+export const COLLECTIONS: { id: Collection; label: string; tagline: string; color: string }[] = [
+  {
+    id: "cuisine",
+    label: "Cuisine",
+    tagline: "Les spécialités niçoises et provençales brodées sur coton blanc.",
+    color: "#15639E",
+  },
+  {
+    id: "italiana",
+    label: "Italiana",
+    tagline: "L’Italie en une phrase. Brodée.",
+    color: "#C4603A",
+  },
+];
+
+export const SELLABLE_COUNT = PRODUCTS.filter((p) => !p.comingSoon).length;
 
 export function getProduct(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
@@ -168,4 +186,6 @@ export function productsByCategory(cat: Category): Product[] {
   return PRODUCTS.filter((p) => p.category === cat);
 }
 
-export const SELLABLE_COUNT = PRODUCTS.filter((p) => !p.comingSoon).length;
+export function getProductsByCollection(collection: Collection): Product[] {
+  return PRODUCTS.filter((p) => p.collection === collection && !p.comingSoon);
+}

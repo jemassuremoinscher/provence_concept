@@ -9,9 +9,8 @@ import { MobileNav } from "./mobile-nav";
 
 export const NAV = [
   { href: "/boutique", label: "Boutique" },
-  { href: "/boutique?cat=t-shirts", label: "T-shirts" },
-  { href: "/boutique?cat=sweatshirts", label: "Sweatshirts" },
-  { href: "/boutique?cat=polos", label: "Polos" },
+  { href: "/boutique?collection=cuisine", label: "Cuisine" },
+  { href: "/boutique?collection=italiana", label: "Italiana" },
   { href: "/journal", label: "Journal" },
   { href: "/a-propos", label: "À propos" },
 ];

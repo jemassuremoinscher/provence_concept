@@ -32,13 +32,15 @@
   --on-tertiary-container: #380d00;
 
   /* Neutral surfaces (cool white family) */
-  --background: #fbfcfe;
+  --background: #F5F0E8;
   --on-background: #1a1c1e;
-  --surface: #fbfcfe;
+  --surface: #F5F0E8;
   --on-surface: #1a1c1e;
   --surface-variant: #dee3ea;
   --on-surface-variant: #42474e;
   --surface-lowest: #ffffff;
+  --terracotta: #C4603A;
+  --terracotta-light: #F2E8E3;
   --surface-low: #f4f7fb;
   --surface-container: #eef2f7;
   --surface-high: #e7edf4;
