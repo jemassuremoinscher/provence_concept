@@ -1,99 +1,179 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Category, PRODUCTS, CATEGORIES } from "@/data/products";
-import { ProductCard } from "./product-card";
 import { Reveal } from "./reveal";
+import { ProductCard } from "./product-card";
 import { NewsletterForm } from "./newsletter-form";
+import { PRODUCTS, CATEGORIES, COLLECTIONS } from "@/data/products";
 
-type Filter = "all" | Category;
+type Props = {
+  initialCat?: string;
+  initialCollection?: string;
+};
 
-const FILTERS: { id: Filter; label: string }[] = [
-  { id: "all", label: "Tout" },
-  ...CATEGORIES.map((c) => ({ id: c.id as Filter, label: c.label })),
-];
-
-export function Catalogue({ initialCat }: { initialCat?: string }) {
-  const valid = CATEGORIES.some((c) => c.id === initialCat);
-  const [filter, setFilter] = useState<Filter>(valid ? (initialCat as Category) : "all");
+export function Catalogue({ initialCat, initialCollection }: Props) {
   const router = useRouter();
+  const [cat, setCat] = useState(initialCat ?? "all");
+  const [collection, setCollection] = useState(initialCollection ?? "all");
 
-  const items = filter === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.category === filter);
+  // Resynchronise l'état quand l'URL change côté client (ex. clic sur un lien nav)
+  // sans que le composant soit remonté.
+  useEffect(() => {
+    setCat(initialCat ?? "all");
+    setCollection(initialCollection ?? "all");
+  }, [initialCat, initialCollection]);
 
-  const onPick = (f: Filter) => {
-    setFilter(f);
-    const url = f === "all" ? "/boutique" : `/boutique?cat=${f}`;
-    router.replace(url, { scroll: false });
+  const updateUrl = (nextCat: string, nextCollection: string) => {
+    const params = new URLSearchParams();
+    if (nextCat !== "all") params.set("cat", nextCat);
+    if (nextCollection !== "all") params.set("collection", nextCollection);
+    const qs = params.toString();
+    router.replace(qs ? `/boutique?${qs}` : "/boutique", { scroll: false });
   };
+
+  const pickCat = (c: string) => {
+    setCat(c);
+    updateUrl(c, collection);
+  };
+
+  const pickCollection = (c: string) => {
+    setCollection(c);
+    updateUrl(cat, c);
+  };
+
+  const filtered = PRODUCTS.filter((p) => {
+    const catMatch = cat === "all" || p.category === cat;
+    const colMatch = collection === "all" || p.collection === collection;
+    return catMatch && colMatch;
+  });
+
+  const sellable = filtered.filter((p) => !p.comingSoon);
+  const comingSoon = filtered.filter((p) => p.comingSoon);
+
+  const showEmpty =
+    sellable.length === 0 &&
+    cat !== "all" &&
+    ["sweatshirts", "polos"].includes(cat);
 
   return (
     <section className="shell pt-10">
+      {/* ── Titre ── */}
       <header className="max-w-2xl">
         <span className="eyebrow text-primary">La boutique</span>
-        <h1 className="display-md mt-2 text-on-surface">Toute la collection</h1>
-        <p className="mt-3 text-on-surface-variant">
-          T-shirts blancs brodés aux noms des spécialités du Sud. Sweats et polos en approche.
+        <h1 className="display-md mt-2 text-on-surface">
+          {collection !== "all"
+            ? COLLECTIONS.find((c) => c.id === collection)?.label ?? "Toute la collection"
+            : "Toute la collection"}
+        </h1>
+        <p className="mt-2 text-sm text-on-surface-variant">
+          T-shirts blancs brodés aux noms des spécialités du Sud.
           Tailles S à XXL.
         </p>
       </header>
 
-      {/* Filter chips */}
-      <div className="mt-8 flex flex-wrap gap-2.5" role="tablist" aria-label="Filtrer par catégorie">
-        {FILTERS.map((f) => {
-          const active = filter === f.id;
-          return (
-            <button
-              key={f.id}
-              role="tab"
-              aria-selected={active}
-              onClick={() => onPick(f.id)}
-              className={`state h-10 rounded-full px-4 text-sm font-semibold transition-colors duration-200 ${
-                active
-                  ? "bg-secondary-container text-on-secondary-container"
-                  : "border border-outline-variant text-on-surface-variant hover:text-on-surface"
-              }`}
-            >
-              {active && (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="mr-1.5 inline-block align-[-3px]" aria-hidden>
-                  <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              )}
-              {f.label}
-            </button>
-          );
-        })}
+      {/* ── Filtres collection ── */}
+      <div className="mt-6 flex flex-wrap gap-2">
+        <button
+          onClick={() => pickCollection("all")}
+          className={`state h-9 rounded-full px-4 text-sm font-medium transition-colors ${
+            collection === "all"
+              ? "bg-primary text-on-primary"
+              : "bg-surface-low text-on-surface-variant hover:text-on-surface"
+          }`}
+        >
+          Toutes
+        </button>
+        {COLLECTIONS.map((col) => (
+          <button
+            key={col.id}
+            onClick={() => pickCollection(col.id)}
+            className={`state h-9 rounded-full px-4 text-sm font-medium transition-colors ${
+              collection === col.id
+                ? "text-on-primary"
+                : "bg-surface-low text-on-surface-variant hover:text-on-surface"
+            }`}
+            style={
+              collection === col.id
+                ? { background: col.color }
+                : undefined
+            }
+          >
+            {col.label}
+          </button>
+        ))}
       </div>
 
-      <p className="mt-6 text-sm text-on-surface-variant">{items.length} pièce{items.length > 1 ? "s" : ""}</p>
+      {/* ── Filtres format ── */}
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          onClick={() => pickCat("all")}
+          className={`state h-8 rounded-full px-3 text-xs font-medium transition-colors ${
+            cat === "all"
+              ? "bg-on-surface text-surface"
+              : "border border-outline-variant text-on-surface-variant hover:text-on-surface"
+          }`}
+        >
+          Tout
+        </button>
+        {CATEGORIES.map((c) => (
+          <button
+            key={c.id}
+            onClick={() => pickCat(c.id)}
+            className={`state h-8 rounded-full px-3 text-xs font-medium transition-colors ${
+              cat === c.id
+                ? "bg-on-surface text-surface"
+                : "border border-outline-variant text-on-surface-variant hover:text-on-surface"
+            }`}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
 
-      {items.length === 0 ? (
-        <div className="mt-5 grid place-items-center rounded-2xl bg-surface-low px-6 py-16 text-center">
-          <span className="rounded-full bg-on-surface/85 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wide text-surface-lowest">
-            Bientôt
-          </span>
-          <h2 className="title-lg mt-4 text-on-surface">Cette catégorie arrive bientôt.</h2>
-          <p className="mt-2 max-w-sm text-sm text-on-surface-variant">
-            On y travaille, dans le même esprit que les t-shirts. Laissez votre e-mail pour être
-            prévenu en avant-première de la sortie.
+      {/* ── Compteur ── */}
+      <p className="mt-6 text-sm text-on-surface-variant">
+        {sellable.length} pièce{sellable.length !== 1 ? "s" : ""}
+      </p>
+
+      {/* ── Grille produits ── */}
+      {showEmpty ? (
+        <div className="mt-10 flex flex-col items-center gap-4 rounded-2xl border border-dashed border-outline-variant bg-surface-low py-16 text-center">
+          <p className="title-lg text-on-surface">Cette catégorie arrive bientôt.</p>
+          <p className="max-w-sm text-sm text-on-surface-variant">
+            On y travaille. Laissez votre e-mail pour être prévenu en avant-première.
           </p>
-          <div className="mt-6 w-full max-w-sm">
+          <div className="mt-2 w-full max-w-sm">
             <NewsletterForm />
           </div>
           <button
-            onClick={() => onPick("all")}
-            className="state mt-5 rounded-full px-3 py-1 text-sm font-semibold text-primary"
+            onClick={() => pickCat("all")}
+            className="state mt-2 rounded-full px-3 py-1 text-sm font-semibold text-primary"
           >
             Voir toute la collection
           </button>
         </div>
       ) : (
-        <div className="mt-5 grid grid-cols-1 gap-x-5 gap-y-10 min-[420px]:grid-cols-2 lg:grid-cols-3">
-          {items.map((p, i) => (
-            <Reveal key={p.id} delay={(i % 3) * 0.05}>
-              <ProductCard product={p} priority={i < 3} />
+        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 min-[420px]:grid-cols-2 lg:grid-cols-4">
+          {sellable.map((p, i) => (
+            <Reveal key={p.id} delay={(i % 4) * 0.05}>
+              <ProductCard product={p} priority={i < 4} />
             </Reveal>
           ))}
+        </div>
+      )}
+
+      {/* ── Coming soon ── */}
+      {comingSoon.length > 0 && (
+        <div className="mt-16">
+          <span className="eyebrow text-on-surface-variant">Bientôt</span>
+          <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
+            {comingSoon.map((p, i) => (
+              <Reveal key={p.id} delay={(i % 4) * 0.05}>
+                <ProductCard product={p} />
+              </Reveal>
+            ))}
+          </div>
         </div>
       )}
     </section>
