@@ -32,12 +32,21 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
       { href: "/cookies", label: "Cookies" },
     ],
   },
+  {
+    title: "Groupe",
+    links: [
+      { href: "/mammouth-group", label: "Mammouth Group" },
+      { href: "https://www.mammouth-ai.com", label: "Mammouth AI", external: true },
+      { href: "https://www.jemassuremoinscher.fr", label: "jemassuremoinscher.fr", external: true },
+      { href: "https://www.mayocreche.fr", label: "Mayo Crèche", external: true },
+    ],
+  },
 ];
 
 export function Footer() {
   return (
     <footer className="mt-24 bg-brand text-white">
-      <div className="shell grid gap-12 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+      <div className="shell grid gap-12 py-16 md:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div>
           <Image src="/logo-white.png" alt="Provence Concept" width={520} height={108} className="h-8 w-auto" />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/85">

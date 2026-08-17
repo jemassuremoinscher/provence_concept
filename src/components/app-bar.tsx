@@ -13,6 +13,7 @@ export const NAV = [
   { href: "/boutique?collection=italiana", label: "Italiana" },
   { href: "/journal", label: "Journal" },
   { href: "/a-propos", label: "À propos" },
+  { href: "/mammouth-group", label: "Groupe" },
 ];
 
 export function AppBar() {
