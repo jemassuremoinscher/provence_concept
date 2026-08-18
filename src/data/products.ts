@@ -145,7 +145,7 @@ export const PRODUCTS: Product[] = [
     description:
       "L’adage revisité : celui qui y va doucement n’a pas la Porsche. Un clin d’œil brodé pour ceux qui assument d’aller vite.",
     price: 34.90,
-    images: [],
+    images: ["/products/chi-va-piano-1.jpg"],
     sizes: SIZES,
     colors: [BLANC],
     category: "t-shirts",
