@@ -38,13 +38,13 @@ export function Hero() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/boutique"
-                className="state h-11 rounded-full bg-white px-6 text-sm font-semibold text-[#0e3d6b]"
+                className="state inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-[#0e3d6b]"
               >
                 Voir la collection
               </Link>
               <Link
                 href="/a-propos"
-                className="state h-11 rounded-full border border-white/25 px-6 text-sm font-medium text-white/80"
+                className="state inline-flex h-11 items-center justify-center rounded-full border border-white/25 px-6 text-sm font-medium text-white/80"
               >
                 Notre histoire
               </Link>
