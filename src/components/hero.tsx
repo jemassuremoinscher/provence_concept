@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SELLABLE_COUNT } from "@/data/products";
 
 export function Hero() {
@@ -55,43 +56,18 @@ export function Hero() {
             </p>
           </div>
 
-          {/* Colonne tee SVG */}
+          {/* Colonne visuel — photo pan bagnat / lavande */}
           <div className="hidden lg:flex lg:items-center lg:justify-center">
-            <svg
-              width="200"
-              height="240"
-              viewBox="0 0 130 160"
-              fill="none"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M35 8 L8 34 L24 42 L24 148 L106 148 L106 42 L122 34 L95 8 L80 20 Q65 28 50 20 Z"
-                fill="rgba(255,255,255,0.09)"
-                stroke="rgba(255,255,255,0.22)"
-                strokeWidth="0.8"
+            <div className="relative aspect-square w-full max-w-[360px] overflow-hidden rounded-2xl shadow-e2 ring-1 ring-white/15">
+              <Image
+                src="/products/pan-bagnat-2.jpg"
+                alt="T-shirts brodés Provence Concept, pliés à côté d'un bouquet de lavande"
+                fill
+                sizes="(max-width:1024px) 0px, 360px"
+                className="object-cover"
+                priority
               />
-              <text
-                x="40" y="76"
-                fontFamily="Georgia, serif"
-                fontSize="9"
-                fontStyle="italic"
-                fill="rgba(123,191,237,0.85)"
-                letterSpacing="0.4"
-              >
-                Socca
-              </text>
-              <text
-                x="40" y="88"
-                fontFamily="Georgia, serif"
-                fontSize="9"
-                fontStyle="italic"
-                fill="rgba(123,191,237,0.85)"
-                letterSpacing="0.4"
-              >
-                Lover
-              </text>
-            </svg>
+            </div>
           </div>
 
         </div>
