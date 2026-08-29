@@ -62,7 +62,7 @@ export const PRODUCTS: Product[] = [
     images: ["/products/socca-lover-1.jpg"],
     sizes: SIZES,
     colors: [
-      { name: "Blanc", hex: "#f4f3ee", image: "/products/socca-lover-blanc.jpg" },
+      { name: "Blanc", hex: "#f4f3ee", image: "/products/socca-lover-1.jpg" },
       { name: "Bleu marine", hex: "#1B2A4A", image: "/products/socca-lover-bleu-marine.jpg" },
       { name: "Gris", hex: "#8C8C8C", image: "/products/socca-lover-gris.jpg" },
       { name: "Noir", hex: "#1A1A1A", image: "/products/socca-lover-noir.jpg" },

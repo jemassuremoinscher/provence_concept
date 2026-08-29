@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useProductColor } from "./product-color-context";
 import { Product } from "@/data/products";
 import { formatPrice } from "@/lib/format";
 import { Button } from "./ui/button";
@@ -9,7 +10,7 @@ import { useCart } from "./cart/cart-context";
 export function ProductBuyPanel({ product }: { product: Product }) {
   const { add } = useCart();
   const [size, setSize] = useState(product.sizes[0]);
-  const [color, setColor] = useState(product.colors[0]?.name ?? "—");
+  const { color, setColor } = useProductColor();
   const disabled = !!product.comingSoon;
 
   return (

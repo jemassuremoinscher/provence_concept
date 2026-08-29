@@ -4,13 +4,20 @@ import Image from "next/image";
 import { useState } from "react";
 import { Product } from "@/data/products";
 import { ProductImage } from "./product-image";
+import { useProductColor } from "./product-color-context";
 
 export function ProductGallery({ product }: { product: Product }) {
   const images = product.images;
   const [active, setActive] = useState(0);
+  const { color } = useProductColor();
 
-  // No real photo yet → branded placeholder.
-  if (images.length === 0) {
+  const selectedColor = product.colors.find((c) => c.name === color);
+  const displaySrc = selectedColor?.image ?? images[active];
+  const displayAlt = selectedColor?.image
+    ? `${product.name} — coloris ${color}`
+    : `${product.name} — visuel ${active + 1}`;
+
+  if (images.length === 0 && !selectedColor?.image) {
     return (
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface-high shadow-e1">
         <ProductImage product={product} priority />
@@ -22,9 +29,9 @@ export function ProductGallery({ product }: { product: Product }) {
     <div>
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface-high shadow-e1">
         <Image
-          key={images[active]}
-          src={images[active]}
-          alt={`${product.name} — visuel ${active + 1}`}
+          key={displaySrc}
+          src={displaySrc}
+          alt={displayAlt}
           fill
           sizes="(max-width:1024px) 100vw, 50vw"
           className="object-cover"
@@ -35,7 +42,7 @@ export function ProductGallery({ product }: { product: Product }) {
       {images.length > 1 && (
         <div className="mt-3 flex gap-3" role="group" aria-label="Autres visuels">
           {images.map((src, i) => {
-            const on = i === active;
+            const on = i === active && !selectedColor?.image;
             return (
               <button
                 key={src}
