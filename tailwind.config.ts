@@ -11,6 +11,8 @@ const config: Config = {
         "primary-container": "var(--primary-container)",
         "on-primary-container": "var(--on-primary-container)",
         brand: "var(--brand)",
+        "hero-accent": "var(--hero-accent)",
+        "hero-deep": "var(--hero-deep)",
         secondary: "var(--secondary)",
         "on-secondary": "var(--on-secondary)",
         "secondary-container": "var(--secondary-container)",

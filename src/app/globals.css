@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
-
 /* ============================================================
    Provence Concept — Material Design 3 (Expressive)
    Tonal palette derived from seed #3C8DCC (brand blue)
@@ -17,7 +15,7 @@
   /* The literal brand blue — for large brand fills / decorative only */
   --brand: #3c8dcc;
   --brand-deep: #0e3d6b;
-  --font-serif: 'Lora', Georgia, serif;
+  --font-serif: var(--font-serif-local), Georgia, serif;
 
   /* Secondary (calm blue-grey) */
   --secondary: #4f6276;
@@ -53,6 +51,10 @@
   --on-error: #ffffff;
   --error-container: #ffdad6;
   --on-error-container: #410002;
+
+  /* Hero — dégradé de marque, hors rampe de surfaces */
+  --hero-accent: #7bbfed;
+  --hero-deep: #0e3d6b;
 
   /* Motion */
   --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
@@ -156,6 +158,17 @@ body {
     font-variant-numeric: tabular-nums;
     font-weight: 700;
   }
+
+  /* Échelle MD3 complétée — labels et corps de texte. Remplace les valeurs
+     arbitraires `text-[0.62rem]` … `text-[1rem]` dispersées dans les composants. */
+  .label-sm { font-size: 0.625rem; line-height: 1rem; font-weight: 600; letter-spacing: 0.02em; }
+  .label-md { font-size: 0.6875rem; line-height: 1rem; font-weight: 600; letter-spacing: 0.02em; }
+  .label-lg { font-size: 0.75rem; line-height: 1.15rem; font-weight: 600; }
+  .body-sm  { font-size: 0.8125rem; line-height: 1.25rem; font-weight: 400; }
+  .body-md  { font-size: 0.9375rem; line-height: 1.4rem; font-weight: 400; }
+  .body-lg  { font-size: 1rem; line-height: 1.5rem; font-weight: 400; }
+  .title-sm { font-family: var(--font-display); font-size: 0.875rem; line-height: 1.2rem; font-weight: 700; }
+  .title-md { font-family: var(--font-display); font-size: 1rem; line-height: 1.3rem; font-weight: 700; }
 }
 
 @media (prefers-reduced-motion: reduce) {

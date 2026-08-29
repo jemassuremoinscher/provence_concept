@@ -43,10 +43,10 @@ export function ProductImage({ product, priority = false }: { product: Product; 
         className="h-[58%] w-auto opacity-[0.16] transition-transform duration-500 ease-emphasized group-hover:scale-[1.06]"
       />
       <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-        <span className="rounded-full bg-surface-lowest/80 px-3 py-1 text-[0.7rem] font-semibold text-on-surface-variant backdrop-blur">
+        <span className="rounded-full bg-surface-lowest/80 px-3 py-1 label-lg font-semibold text-on-surface-variant backdrop-blur">
           {categoryLabel(product.category)}
         </span>
-        <span className="text-[0.7rem] font-semibold uppercase tracking-wider text-on-surface-variant/70">
+        <span className="label-lg font-semibold uppercase tracking-wider text-on-surface-variant/70">
           Visuel à venir
         </span>
       </div>

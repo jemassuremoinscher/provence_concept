@@ -34,7 +34,7 @@ export function CategoryCard({ category }: { category: Category }) {
       />
       <div className="relative">
         {comingSoon && (
-          <span className="mb-2 inline-block rounded-full bg-on-surface/85 px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-wide text-surface-lowest">
+          <span className="mb-2 inline-block rounded-full bg-on-surface/85 px-2.5 py-0.5 label-md font-bold uppercase tracking-wide text-surface-lowest">
             Bientôt
           </span>
         )}

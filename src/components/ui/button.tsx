@@ -8,8 +8,8 @@ const base =
   "state inline-flex items-center justify-center gap-2 rounded-full font-sans font-semibold leading-none transition-[transform,box-shadow,background-color] duration-200 ease-emphasized select-none disabled:opacity-40 disabled:pointer-events-none active:scale-[0.97]";
 
 const sizes: Record<Size, string> = {
-  md: "h-11 px-6 text-[0.92rem]",
-  lg: "h-14 px-8 text-[1rem]",
+  md: "h-11 px-6 body-md",
+  lg: "h-14 px-8 body-lg",
 };
 
 const variants: Record<Variant, string> = {

@@ -58,12 +58,12 @@ export function ProductCard({
       >
         <ProductImage product={product} priority={priority} />
         {product.badge && (
-          <span className="absolute left-3 top-3 rounded-full bg-tertiary-container px-3 py-1 text-[0.7rem] font-bold text-on-tertiary-container shadow-e1">
+          <span className="absolute left-3 top-3 rounded-full bg-tertiary-container px-3 py-1 label-lg font-bold text-on-tertiary-container shadow-e1">
             {product.badge}
           </span>
         )}
         {soldOut && (
-          <span className="absolute left-3 top-3 rounded-full bg-black px-3 py-1.5 text-[0.75rem] font-bold uppercase tracking-wide text-white shadow-e2">
+          <span className="absolute left-3 top-3 rounded-full bg-black px-3 py-1.5 label-lg font-bold uppercase tracking-wide text-white shadow-e2">
             Bientôt
           </span>
         )}
@@ -73,7 +73,7 @@ export function ProductCard({
       <div className="mt-3 flex flex-col gap-1 px-1" ref={wrapRef}>
         <Link
           href={`/produit/${product.slug}`}
-          className="card-name-serif text-[1rem] text-on-surface transition-colors hover:text-primary"
+          className="card-name-serif body-lg text-on-surface transition-colors hover:text-primary"
         >
           {product.name}
         </Link>
@@ -84,7 +84,7 @@ export function ProductCard({
 
         <div className="mt-2 flex items-center justify-between gap-2">
           {product.price != null ? (
-            <span className="text-[0.95rem] font-semibold text-on-surface">
+            <span className="body-lg font-semibold text-on-surface">
               {formatPrice(product.price)}
             </span>
           ) : (

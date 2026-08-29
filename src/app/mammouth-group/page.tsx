@@ -128,7 +128,7 @@ export default function MammouthGroupPage() {
                       {c.name}
                     </h3>
                     {c.current && (
-                      <span className="rounded-full bg-primary px-2 py-0.5 text-[0.65rem] font-semibold text-on-primary">
+                      <span className="rounded-full bg-primary px-2 py-0.5 label-md font-semibold text-on-primary">
                         Ce site
                       </span>
                     )}

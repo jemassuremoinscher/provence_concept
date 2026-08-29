@@ -21,6 +21,14 @@ const sans = localFont({
   display: "swap",
 });
 
+// Lora 600, sous-ensemble latin — la seule graisse utilisée par `.card-name-serif`.
+const serif = localFont({
+  src: "../fonts/Lora.woff2",
+  weight: "600",
+  variable: "--font-serif-local",
+  display: "swap",
+});
+
 const SITE_URL = "https://provence-concept.vercel.app"; // ← remplacez par votre domaine final
 
 export const metadata: Metadata = {
@@ -72,7 +80,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${display.variable} ${sans.variable}`}>
+    <html lang="fr" className={`${display.variable} ${sans.variable} ${serif.variable}`}>
       <body>
         {/* Set .js before first paint so the CSS entrance reveal only arms when
             JS is present. No-JS / crawlers keep content fully visible. */}

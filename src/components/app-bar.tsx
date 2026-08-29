@@ -48,7 +48,7 @@ export function AppBar() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="state rounded-full px-4 py-2 text-[0.92rem] font-semibold text-on-surface-variant hover:text-on-surface"
+                className="state rounded-full px-4 py-2 body-md font-semibold text-on-surface-variant hover:text-on-surface"
               >
                 {item.label}
               </Link>
@@ -65,7 +65,7 @@ export function AppBar() {
                 <path d="M6 7h12l-1 12H7L6 7zM9 7a3 3 0 016 0" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               {count > 0 && (
-                <span className="absolute right-1.5 top-1.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-tertiary px-1 text-[0.62rem] font-bold text-on-tertiary">
+                <span className="absolute right-1.5 top-1.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-tertiary px-1 label-sm font-bold text-on-tertiary">
                   {count}
                 </span>
               )}

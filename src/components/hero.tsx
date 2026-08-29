@@ -26,7 +26,7 @@ export function Hero() {
             {/* H1 en Lora */}
             <h1 className="mt-4 font-serif text-4xl font-normal leading-[1.1] text-white sm:text-5xl lg:text-[3.25rem]">
               Le Sud,{" "}
-              <em className="italic text-[#7bbfed]">à porter.</em>
+              <em className="italic text-hero-accent">à porter.</em>
             </h1>
 
             <p className="mt-5 max-w-md text-lg leading-relaxed text-white/60">
@@ -38,7 +38,7 @@ export function Hero() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/boutique"
-                className="state inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-[#0e3d6b]"
+                className="state inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-hero-deep"
               >
                 Voir la collection
               </Link>
