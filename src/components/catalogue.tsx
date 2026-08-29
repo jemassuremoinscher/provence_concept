@@ -51,10 +51,14 @@ export function Catalogue({ initialCat, initialCollection }: Props) {
   const sellable = filtered.filter((p) => !p.comingSoon);
   const comingSoon = filtered.filter((p) => p.comingSoon);
 
-  const showEmpty =
-    sellable.length === 0 &&
-    cat !== "all" &&
-    ["sweatshirts", "polos"].includes(cat);
+  // Le placeholder « arrive bientôt » ne doit s'afficher que quand il n'y a
+  // RIEN du tout dans le filtre courant. Le conditionner à `sellable.length`
+  // seul le déclenchait aussi pour polos/sweatshirts dès qu'ils contenaient
+  // uniquement des pièces `comingSoon` — juste au-dessus de la section
+  // « Bientôt » qui affiche ces mêmes pièces en vrai, avec prix et photo.
+  // Message contradictoire : « on y travaille, laissez votre e-mail »
+  // suivi immédiatement des produits déjà visibles.
+  const showEmpty = filtered.length === 0 && cat !== "all";
 
   return (
     <section className="shell pt-10">
@@ -133,7 +137,11 @@ export function Catalogue({ initialCat, initialCollection }: Props) {
 
       {/* ── Compteur ── */}
       <p className="mt-6 text-sm text-on-surface-variant">
-        {sellable.length} pièce{sellable.length !== 1 ? "s" : ""}
+        {sellable.length > 0
+          ? `${sellable.length} pièce${sellable.length !== 1 ? "s" : ""}`
+          : comingSoon.length > 0
+          ? `${comingSoon.length} pièce${comingSoon.length !== 1 ? "s" : ""} bientôt disponible${comingSoon.length !== 1 ? "s" : ""}`
+          : "0 pièce"}
       </p>
 
       {/* ── Grille produits ── */}
