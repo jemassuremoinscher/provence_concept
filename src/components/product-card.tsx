@@ -41,7 +41,9 @@ export function ProductCard({
   }
 
   function handleSizePick(size: string) {
-    add(product, { size });
+    // La card n'affiche qu'un coloris (`images[0]`, soit `colors[0]`) : on le passe
+    // explicitement pour que l'ajout ne dépende jamais du repli silencieux de `add`.
+    add(product, { size, color: product.colors[0]?.name });
     setStep("added");
     setTimeout(() => setStep("idle"), 1200);
   }

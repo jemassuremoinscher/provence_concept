@@ -40,9 +40,11 @@ function reducer(state: State, action: Action): State {
     case "remove":
       return { lines: state.lines.filter((l) => lineKey(l) !== action.key) };
     case "qty":
+      // Descendre à 0 retire la ligne : le bouton « − » sur une quantité de 1
+      // doit supprimer, sinon il ne fait rien et l'utilisateur est bloqué.
       return {
         lines: state.lines
-          .map((l) => (lineKey(l) === action.key ? { ...l, qty: Math.max(1, action.qty) } : l))
+          .map((l) => (lineKey(l) === action.key ? { ...l, qty: action.qty } : l))
           .filter((l) => l.qty > 0),
       };
     case "clear":
@@ -68,6 +70,24 @@ type CartCtx = {
 const Ctx = createContext<CartCtx | null>(null);
 const STORAGE = "pc_cart_v1";
 
+// `localStorage` est modifiable par l'utilisateur et survit aux changements de
+// format : on ne fait confiance à aucune ligne dont la forme n'est pas vérifiée.
+function isCartLine(v: unknown): v is CartLine {
+  if (typeof v !== "object" || v === null) return false;
+  const l = v as Record<string, unknown>;
+  return (
+    typeof l.id === "string" &&
+    typeof l.slug === "string" &&
+    typeof l.name === "string" &&
+    (typeof l.price === "number" || l.price === null) &&
+    typeof l.size === "string" &&
+    typeof l.color === "string" &&
+    typeof l.qty === "number" &&
+    Number.isFinite(l.qty) &&
+    l.qty > 0
+  );
+}
+
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, { lines: [] });
   const [open, setOpen] = useState(false);
@@ -75,7 +95,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE);
-      if (raw) dispatch({ type: "hydrate", lines: JSON.parse(raw) });
+      if (raw) {
+        const parsed: unknown = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          dispatch({ type: "hydrate", lines: parsed.filter(isCartLine) });
+        }
+      }
     } catch {}
   }, []);
 
