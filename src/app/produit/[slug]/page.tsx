@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { PRODUCTS, getProduct, getProductsByCollection } from "@/data/products";
+import { PRODUCTS, COLLECTIONS, getProduct, getProductsByCollection } from "@/data/products";
 import { categoryLabel } from "@/lib/format";
 import { ProductColorProvider } from "@/components/product-color-context";
 import { ProductGallery } from "@/components/product-gallery";
@@ -19,10 +19,20 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const product = getProduct(params.slug);
   if (!product) return { title: "Pièce introuvable" };
+
+  const formatLabel = categoryLabel(product.category); // "T-shirt" | "Polo" | "Sweat"
+  const collectionMeta = COLLECTIONS.find((c) => c.id === product.collection);
+
   return {
-    title: `${product.name} — ${categoryLabel(product.category)} brodé, spécialité niçoise`,
+    title: `${product.name} — ${formatLabel} brodé${collectionMeta ? `, collection ${collectionMeta.label}` : ""}`,
     description: `${product.tagline} ${product.description}`,
-    keywords: [product.name, `t-shirt brodé ${product.name}`, "spécialité niçoise", "t-shirt provençal", "made in France"],
+    keywords: [
+      product.name,
+      `${formatLabel.toLowerCase()} brodé ${product.name}`,
+      collectionMeta ? `collection ${collectionMeta.label}` : "",
+      "vêtement brodé français",
+      "made in France",
+    ].filter(Boolean),
     alternates: { canonical: `/produit/${product.slug}` },
     openGraph: {
       title: `${product.name} · Provence Concept`,
@@ -47,27 +57,57 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   );
   const related = [...sameCollection, ...otherProducts].slice(0, 4);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: product.description,
-    sku: product.id,
-    image: (product.images.length ? product.images : ["/picto-blue.png"]).map((src) => `${SITE_URL}${src}`),
-    brand: { "@type": "Brand", name: "Provence Concept" },
-    category: categoryLabel(product.category),
-    url: `${SITE_URL}/produit/${product.slug}`,
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "EUR",
-      price: product.price ?? undefined,
-      url: `${SITE_URL}/produit/${product.slug}`,
-      itemCondition: "https://schema.org/NewCondition",
-      availability: product.comingSoon
-        ? "https://schema.org/PreOrder"
-        : "https://schema.org/InStock",
-    },
-  };
+  // Produits liés par le même motif (t-shirt/polo/sweat) — sert au ProductGroup.
+  const variants = product.design
+    ? PRODUCTS.filter((p) => p.design === product.design)
+    : [product];
+
+  const makeOffer = (p: typeof product) =>
+    p.price != null
+      ? {
+          "@type": "Offer",
+          priceCurrency: "EUR",
+          price: p.price,
+          url: `${SITE_URL}/produit/${p.slug}`,
+          itemCondition: "https://schema.org/NewCondition",
+          availability: p.comingSoon
+            ? "https://schema.org/PreOrder"
+            : "https://schema.org/InStock",
+        }
+      : undefined;
+
+  const jsonLd =
+    variants.length > 1
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ProductGroup",
+          name: product.design,
+          productGroupID: product.design,
+          brand: { "@type": "Brand", name: "Provence Concept" },
+          variesBy: ["https://schema.org/size", "https://schema.org/color"],
+          hasVariant: variants.map((v) => ({
+            "@type": "Product",
+            name: v.name,
+            description: v.description,
+            sku: v.id,
+            image: (v.images.length ? v.images : ["/picto-blue.png"]).map((src) => `${SITE_URL}${src}`),
+            category: categoryLabel(v.category),
+            url: `${SITE_URL}/produit/${v.slug}`,
+            offers: makeOffer(v),
+          })),
+        }
+      : {
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: product.name,
+          description: product.description,
+          sku: product.id,
+          image: (product.images.length ? product.images : ["/picto-blue.png"]).map((src) => `${SITE_URL}${src}`),
+          brand: { "@type": "Brand", name: "Provence Concept" },
+          category: categoryLabel(product.category),
+          url: `${SITE_URL}/produit/${product.slug}`,
+          offers: makeOffer(product),
+        };
 
   const breadcrumbLd = {
     "@context": "https://schema.org",
