@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { PRODUCTS, getProduct, productsByCategory } from "@/data/products";
-import { categoryLabel, formatPrice } from "@/lib/format";
+import { PRODUCTS, getProduct, getProductsByCollection } from "@/data/products";
+import { categoryLabel } from "@/lib/format";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductBuyPanel } from "@/components/product-buy-panel";
 import { ProductCard } from "@/components/product-card";
@@ -34,9 +34,16 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = getProduct(params.slug);
   if (!product) notFound();
 
-  const related = productsByCategory(product.category)
-    .filter((p) => p.slug !== product.slug)
-    .slice(0, 3);
+  // Upsell : d'abord la même collection, puis le reste du catalogue en appoint.
+  // Pas de filtre sur `comingSoon` — les pièces à venir portent leur badge
+  // « Bientôt » et restent un levier d'anticipation.
+  const sameCollection = getProductsByCollection(product.collection).filter(
+    (p) => p.slug !== product.slug
+  );
+  const otherProducts = PRODUCTS.filter(
+    (p) => p.collection !== product.collection && p.slug !== product.slug
+  );
+  const related = [...sameCollection, ...otherProducts].slice(0, 4);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -140,7 +147,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       {related.length > 0 && (
         <section className="mt-24">
           <h2 className="headline text-on-surface">Dans le même esprit</h2>
-          <div className="mt-8 grid grid-cols-1 gap-x-5 gap-y-10 min-[420px]:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-x-5 gap-y-10 min-[420px]:grid-cols-2 lg:grid-cols-4">
             {related.map((p, i) => (
               <Reveal key={p.id} delay={i * 0.05}>
                 <ProductCard product={p} />

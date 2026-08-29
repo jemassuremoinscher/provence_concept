@@ -10,7 +10,7 @@ export type Product = {
   price: number | null;
   images: string[];
   sizes: string[];
-  colors: { name: string; hex: string }[];
+  colors: { name: string; hex: string; image?: string }[];
   category: Category;
   collection: Collection;
   badge?: string;
@@ -21,11 +21,32 @@ export type Product = {
 const SIZES = ["S", "M", "L", "XL", "XXL"];
 const BLANC = { name: "Blanc", hex: "#f4f3ee" };
 
+// Grille tarifaire par format. Les entrées polo/sweat n'existent pas encore :
+// POLO_PRICE et SWEAT_PRICE sont posés en amont de leur création.
+export const TSHIRT_PRICE = 34.90;
+export const POLO_PRICE = 44.90;
+export const SWEAT_PRICE = 54.90;
+
 // Détails communs à la collection t-shirts (modifiable produit par produit).
 const TEE_DETAILS = [
   "Coton peigné 180 g/m²",
   "Broderie poitrine",
   "Col rond renforcé",
+  "Coupe droite régulière",
+];
+
+// Détails propres au polo et au sweat : grammage et col diffèrent du t-shirt.
+const POLO_DETAILS = [
+  "Piqué de coton 210 g/m²",
+  "Col boutonné",
+  "Broderie poitrine",
+  "Coupe droite régulière",
+];
+
+const SWEAT_DETAILS = [
+  "Molleton 320 g/m²",
+  "Col rond côtelé",
+  "Broderie poitrine",
   "Coupe droite régulière",
 ];
 
@@ -38,9 +59,16 @@ export const PRODUCTS: Product[] = [
     description:
       "La socca, cette galette de pois chiche dorée qu'on mange brûlante sur le Cours Saleya. Pour les vrais amoureux du Vieux-Nice : socca lover, brodé vert.",
     price: 34.90,
-    images: ["/products/socca-lover-1.jpg", "/products/socca-lover-2.jpg"],
+    images: ["/products/socca-lover-1.jpg"],
     sizes: SIZES,
-    colors: [BLANC],
+    colors: [
+      { name: "Blanc", hex: "#f4f3ee", image: "/products/socca-lover-blanc.jpg" },
+      { name: "Bleu marine", hex: "#1B2A4A", image: "/products/socca-lover-bleu-marine.jpg" },
+      { name: "Gris", hex: "#8C8C8C", image: "/products/socca-lover-gris.jpg" },
+      { name: "Noir", hex: "#1A1A1A", image: "/products/socca-lover-noir.jpg" },
+      { name: "Rouge", hex: "#B23A2E", image: "/products/socca-lover-rouge.jpg" },
+      { name: "Vert", hex: "#4A7C3F", image: "/products/socca-lover-vert.jpg" },
+    ],
     category: "t-shirts",
     collection: "cuisine",
     badge: "Nouveau",
@@ -130,12 +158,104 @@ export const PRODUCTS: Product[] = [
     description:
       "Tomates mûres, ail, persil, chapelure, huile d'olive. Cinq minutes de préparation, un résultat qui sent le Sud.",
     price: 34.90,
-    images: ["/products/tomates-provencale-1.jpg", "/products/tomates-provencale-2.jpg"],
+    images: ["/products/tomates-provencale-1.jpg"],
     sizes: SIZES,
-    colors: [BLANC],
+    colors: [
+      { name: "Blanc", hex: "#f4f3ee", image: "/products/tomates-provencale-1.jpg" },
+      { name: "Bleu marine", hex: "#1B2A4A", image: "/products/tomates-provencale-bleu-marine.jpg" },
+      { name: "Gris", hex: "#8C8C8C", image: "/products/tomates-provencale-gris.jpg" },
+      { name: "Noir", hex: "#1A1A1A", image: "/products/tomates-provencale-noir.jpg" },
+      { name: "Rouge", hex: "#B23A2E", image: "/products/tomates-provencale-rouge.jpg" },
+    ],
     category: "t-shirts",
     collection: "cuisine",
     details: TEE_DETAILS,
+  },
+  {
+    id: "tomates-provencale-polo",
+    slug: "tomates-provencale-polo",
+    name: "Tomates à la provençale — Polo",
+    tagline: "Le réflexe d'été, en polo.",
+    description: "Tomates mûres, ail, persil, chapelure, huile d'olive. Le même esprit, coupe polo.",
+    price: POLO_PRICE,
+    images: ["/products/tomates-provencale-polo-blanc.jpg"],
+    sizes: SIZES,
+    colors: [
+      { name: "Blanc", hex: "#f4f3ee", image: "/products/tomates-provencale-polo-blanc.jpg" },
+      { name: "Bleu marine", hex: "#1B2A4A", image: "/products/tomates-provencale-polo-bleu-marine.jpg" },
+      { name: "Gris", hex: "#8C8C8C", image: "/products/tomates-provencale-polo-gris.jpg" },
+      { name: "Noir", hex: "#1A1A1A", image: "/products/tomates-provencale-polo-noir.jpg" },
+      { name: "Rouge", hex: "#B23A2E", image: "/products/tomates-provencale-polo-rouge.jpg" },
+    ],
+    category: "polos",
+    collection: "cuisine",
+    comingSoon: true,
+    details: POLO_DETAILS,
+  },
+  {
+    id: "tomates-provencale-sweat",
+    slug: "tomates-provencale-sweat",
+    name: "Tomates à la provençale — Sweat",
+    tagline: "Le réflexe d'été, version cocon.",
+    description: "Tomates mûres, ail, persil, chapelure, huile d'olive. Le même esprit, en sweat brodé.",
+    price: SWEAT_PRICE,
+    images: ["/products/tomates-provencale-sweat-blanc.jpg"],
+    sizes: SIZES,
+    colors: [
+      { name: "Blanc", hex: "#f4f3ee", image: "/products/tomates-provencale-sweat-blanc.jpg" },
+      { name: "Bleu marine", hex: "#1B2A4A", image: "/products/tomates-provencale-sweat-bleu-marine.jpg" },
+      { name: "Gris", hex: "#8C8C8C", image: "/products/tomates-provencale-sweat-gris.jpg" },
+      { name: "Noir", hex: "#1A1A1A", image: "/products/tomates-provencale-sweat-noir.jpg" },
+      { name: "Rouge", hex: "#B23A2E", image: "/products/tomates-provencale-sweat-rouge.jpg" },
+    ],
+    category: "sweatshirts",
+    collection: "cuisine",
+    comingSoon: true,
+    details: SWEAT_DETAILS,
+  },
+  {
+    id: "socca-lover-polo",
+    slug: "socca-lover-polo",
+    name: "Socca Lover — Polo",
+    tagline: "Pois chiche, croustillant, en polo.",
+    description: "La socca, brûlante sur le Cours Saleya. Le même clin d'œil, coupe polo.",
+    price: POLO_PRICE,
+    images: ["/products/socca-lover-polo-blanc.jpg"],
+    sizes: SIZES,
+    colors: [
+      { name: "Blanc", hex: "#f4f3ee", image: "/products/socca-lover-polo-blanc.jpg" },
+      { name: "Bleu marine", hex: "#1B2A4A", image: "/products/socca-lover-polo-bleu-marine.jpg" },
+      { name: "Gris", hex: "#8C8C8C", image: "/products/socca-lover-polo-gris.jpg" },
+      { name: "Noir", hex: "#1A1A1A", image: "/products/socca-lover-polo-noir.jpg" },
+      { name: "Rouge", hex: "#B23A2E", image: "/products/socca-lover-polo-rouge.jpg" },
+      { name: "Vert", hex: "#4A7C3F", image: "/products/socca-lover-polo-vert.jpg" },
+    ],
+    category: "polos",
+    collection: "cuisine",
+    comingSoon: true,
+    details: POLO_DETAILS,
+  },
+  {
+    id: "socca-lover-sweat",
+    slug: "socca-lover-sweat",
+    name: "Socca Lover — Sweat",
+    tagline: "Pois chiche, croustillant, version cocon.",
+    description: "La socca, brûlante sur le Cours Saleya. Le même clin d'œil, en sweat brodé.",
+    price: SWEAT_PRICE,
+    images: ["/products/socca-lover-sweat-blanc.jpg"],
+    sizes: SIZES,
+    colors: [
+      { name: "Blanc", hex: "#f4f3ee", image: "/products/socca-lover-sweat-blanc.jpg" },
+      { name: "Bleu marine", hex: "#1B2A4A", image: "/products/socca-lover-sweat-bleu-marine.jpg" },
+      { name: "Gris", hex: "#8C8C8C", image: "/products/socca-lover-sweat-gris.jpg" },
+      { name: "Noir", hex: "#1A1A1A", image: "/products/socca-lover-sweat-noir.jpg" },
+      { name: "Rouge", hex: "#B23A2E", image: "/products/socca-lover-sweat-rouge.jpg" },
+      { name: "Vert", hex: "#4A7C3F", image: "/products/socca-lover-sweat-vert.jpg" },
+    ],
+    category: "sweatshirts",
+    collection: "cuisine",
+    comingSoon: true,
+    details: SWEAT_DETAILS,
   },
   {
     id: "chi-va-piano",
@@ -158,7 +278,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "moule-frites-addict",
     slug: "moule-frites-addict",
-    name: "Moule-frites addict",
+    name: "Moules-frites addict",
     tagline: "Le classique du Nord, brodé fidèle.",
     description: "Moules marinière, frites croustillantes, un cornet à la main. Le repas du Nord qui ne se discute pas.",
     price: 34.90,
@@ -613,8 +733,8 @@ export const PRODUCTS: Product[] = [
 
 export const CATEGORIES: { id: Category; label: string; comingSoon?: boolean }[] = [
   { id: "t-shirts", label: "T-shirts" },
-  { id: "sweatshirts", label: "Sweatshirts", comingSoon: true },
-  { id: "polos", label: "Polos", comingSoon: true },
+  { id: "sweatshirts", label: "Sweatshirts" },
+  { id: "polos", label: "Polos" },
 ];
 
 export const COLLECTIONS: { id: Collection; label: string; tagline: string; color: string }[] = [
@@ -625,8 +745,10 @@ export const COLLECTIONS: { id: Collection; label: string; tagline: string; colo
     color: "#15639E",
   },
   {
+    // `id` reste "italiana" : il sert de clé d'URL (?collection=italiana).
+    // Seul le label affiché change.
     id: "italiana",
-    label: "Italiana",
+    label: "Dolce Vita",
     tagline: "L’Italie en une phrase. Brodée.",
     color: "#C4603A",
   },

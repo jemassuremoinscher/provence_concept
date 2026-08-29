@@ -7,16 +7,9 @@ import { formatPrice } from "@/lib/format";
 import { ProductImage } from "./product-image";
 import { useCart } from "./cart/cart-context";
 
-const CARD_TINTS: Record<string, string> = {
-  "socca-lover":         "#f3f1fa",
-  "pan-bagnat":          "#eff4fb",
-  "ratatouille-nicoise": "#fbf0ec",
-  "barbajuans":          "#fdf3e7",
-  "petits-farcis":       "#f0f5ec",
-  "caviar-daubergine":   "#f5f0fb",
-  "tomates-provencale":  "#fdf0f0",
-  "chi-va-piano":        "#fdf3ee",
-};
+// Fond de card unique pour toute la grille. Les teintes dérivées de
+// `colors[0].hex` produisaient 31 pastels différents et cassaient l'homogénéité.
+const CARD_BG = "#F3F1FA";
 
 export function ProductCard({
   product,
@@ -27,7 +20,6 @@ export function ProductCard({
 }) {
   const { add } = useCart();
   const soldOut = product.comingSoon;
-  const tint = CARD_TINTS[product.slug] ?? "#f3f1fa";
 
   const [step, setStep] = useState<"idle" | "picking" | "added">("idle");
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -60,7 +52,7 @@ export function ProductCard({
       <Link
         href={`/produit/${product.slug}`}
         className="relative block aspect-[4/5] w-full overflow-hidden rounded-xl shadow-e1 transition-shadow duration-300 ease-emphasized hover:shadow-e2"
-        style={{ background: tint }}
+        style={{ background: CARD_BG }}
       >
         <ProductImage product={product} priority={priority} />
         {product.badge && (
@@ -69,7 +61,7 @@ export function ProductCard({
           </span>
         )}
         {soldOut && (
-          <span className="absolute left-3 top-3 rounded-full bg-on-surface/85 px-3 py-1 text-[0.7rem] font-bold text-surface-lowest">
+          <span className="absolute left-3 top-3 rounded-full bg-black px-3 py-1.5 text-[0.75rem] font-bold uppercase tracking-wide text-white shadow-e2">
             Bientôt
           </span>
         )}

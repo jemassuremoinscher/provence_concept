@@ -12,7 +12,9 @@ export default function HomePage() {
       {/* ── Collections ── */}
       <div className="shell mt-20 space-y-20">
         {COLLECTIONS.map((col) => {
-          const items = getProductsByCollection(col.id);
+          // Home : une rangée pleine (4 colonnes) par collection.
+          // La liste complète est sur /boutique via « Tout voir → ».
+          const items = getProductsByCollection(col.id).slice(0, 4);
           return (
             <section key={col.id}>
               {/* En-tête collection */}

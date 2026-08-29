@@ -10,7 +10,7 @@ import { MobileNav } from "./mobile-nav";
 export const NAV = [
   { href: "/boutique", label: "Boutique" },
   { href: "/boutique?collection=cuisine", label: "Cuisine" },
-  { href: "/boutique?collection=italiana", label: "Italiana" },
+  { href: "/boutique?collection=italiana", label: "Dolce Vita" },
   { href: "/journal", label: "Journal" },
   { href: "/a-propos", label: "À propos" },
   { href: "/mammouth-group", label: "Groupe" },
