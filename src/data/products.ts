@@ -13,6 +13,8 @@ export type Product = {
   colors: { name: string; hex: string; image?: string }[];
   category: Category;
   collection: Collection;
+  // Motif partagé par les déclinaisons de format (t-shirt / polo / sweat).
+  design?: string;
   badge?: string;
   comingSoon?: boolean;
   details: string[];
@@ -54,6 +56,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "socca-lover",
     slug: "socca-lover",
+    design: "socca-lover",
     name: "Socca Lover",
     tagline: "Pois chiche, croustillant, pur Nice.",
     description:
@@ -153,6 +156,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "tomates-provencale",
     slug: "tomates-provencale",
+    design: "tomates-provencale",
     name: "Tomates à la provençale",
     tagline: "Le réflexe d’été, fil rouge.",
     description:
@@ -174,6 +178,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "tomates-provencale-polo",
     slug: "tomates-provencale-polo",
+    design: "tomates-provencale",
     name: "Tomates à la provençale — Polo",
     tagline: "Le réflexe d'été, en polo.",
     description: "Tomates mûres, ail, persil, chapelure, huile d'olive. Le même esprit, coupe polo.",
@@ -195,6 +200,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "tomates-provencale-sweat",
     slug: "tomates-provencale-sweat",
+    design: "tomates-provencale",
     name: "Tomates à la provençale — Sweat",
     tagline: "Le réflexe d'été, version cocon.",
     description: "Tomates mûres, ail, persil, chapelure, huile d'olive. Le même esprit, en sweat brodé.",
@@ -216,6 +222,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "socca-lover-polo",
     slug: "socca-lover-polo",
+    design: "socca-lover",
     name: "Socca Lover — Polo",
     tagline: "Pois chiche, croustillant, en polo.",
     description: "La socca, brûlante sur le Cours Saleya. Le même clin d'œil, coupe polo.",
@@ -238,6 +245,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "socca-lover-sweat",
     slug: "socca-lover-sweat",
+    design: "socca-lover",
     name: "Socca Lover — Sweat",
     tagline: "Pois chiche, croustillant, version cocon.",
     description: "La socca, brûlante sur le Cours Saleya. Le même clin d'œil, en sweat brodé.",

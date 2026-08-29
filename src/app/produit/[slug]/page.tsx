@@ -6,6 +6,7 @@ import { categoryLabel } from "@/lib/format";
 import { ProductColorProvider } from "@/components/product-color-context";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductBuyPanel } from "@/components/product-buy-panel";
+import { ProductFormatLinks } from "@/components/product-format-links";
 import { ProductCard } from "@/components/product-card";
 import { Reveal } from "@/components/reveal";
 
@@ -116,6 +117,8 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             <div className="mt-6">
               <ProductBuyPanel product={product} />
             </div>
+
+            <ProductFormatLinks product={product} />
 
             <hr className="my-8 border-outline-variant" />
 
