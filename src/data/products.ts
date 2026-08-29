@@ -654,6 +654,8 @@ export function productsByCategory(cat: Category): Product[] {
   return PRODUCTS.filter((p) => p.category === cat);
 }
 
+// Retourne toute la collection, `comingSoon` compris : les cards à venir sont
+// rendues avec le badge « Bientôt » et sans bouton d'achat (voir ProductCard).
 export function getProductsByCollection(collection: Collection): Product[] {
-  return PRODUCTS.filter((p) => p.collection === collection && !p.comingSoon);
+  return PRODUCTS.filter((p) => p.collection === collection);
 }
