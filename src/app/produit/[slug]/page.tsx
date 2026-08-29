@@ -76,15 +76,20 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         }
       : undefined;
 
+  // Le format (t-shirt/polo/sweat) n'est pas une propriété schema.org standard :
+  // `variesBy` reste réservé à ce sur quoi les variantes diffèrent réellement
+  // (taille, couleur), donc chaque `hasVariant` porte ses propres `size`/`color`
+  // plutôt que de le déclarer au niveau du groupe.
+  const groupName = variants.find((v) => v.category === "t-shirts")?.name ?? variants[0].name;
+
   const jsonLd =
     variants.length > 1
       ? {
           "@context": "https://schema.org",
           "@type": "ProductGroup",
-          name: product.design,
+          name: groupName,
           productGroupID: product.design,
           brand: { "@type": "Brand", name: "Provence Concept" },
-          variesBy: ["https://schema.org/size", "https://schema.org/color"],
           hasVariant: variants.map((v) => ({
             "@type": "Product",
             name: v.name,
@@ -93,6 +98,8 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             image: (v.images.length ? v.images : ["/picto-blue.png"]).map((src) => `${SITE_URL}${src}`),
             category: categoryLabel(v.category),
             url: `${SITE_URL}/produit/${v.slug}`,
+            size: v.sizes,
+            color: v.colors.map((c) => c.name),
             offers: makeOffer(v),
           })),
         }
