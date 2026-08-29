@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useProductColor } from "./product-color-context";
+import { SizeGuide } from "./size-guide";
 import { Product } from "@/data/products";
 import { formatPrice } from "@/lib/format";
 import { Button } from "./ui/button";
@@ -10,6 +11,7 @@ import { useCart } from "./cart/cart-context";
 export function ProductBuyPanel({ product }: { product: Product }) {
   const { add } = useCart();
   const [size, setSize] = useState(product.sizes[0]);
+  const [guideOpen, setGuideOpen] = useState(false);
   const { color, setColor } = useProductColor();
   const disabled = !!product.comingSoon;
 
@@ -52,7 +54,14 @@ export function ProductBuyPanel({ product }: { product: Product }) {
       <div className="mt-7">
         <div className="mb-2.5 flex items-center justify-between">
           <span className="text-sm font-semibold text-on-surface">Taille</span>
-          <button className="text-sm font-semibold text-primary state rounded-sm px-1">Guide des tailles</button>
+          <button
+            type="button"
+            onClick={() => setGuideOpen(true)}
+            aria-haspopup="dialog"
+            className="text-sm font-semibold text-primary state rounded-sm px-1"
+          >
+            Guide des tailles
+          </button>
         </div>
         <div className="flex flex-wrap gap-2">
           {product.sizes.map((s) => {
@@ -86,6 +95,12 @@ export function ProductBuyPanel({ product }: { product: Product }) {
           {disabled ? "Bientôt disponible" : "Ajouter au panier"}
         </Button>
       </div>
+
+      <SizeGuide
+        category={product.category}
+        open={guideOpen}
+        onClose={() => setGuideOpen(false)}
+      />
 
       {disabled && (
         <p className="mt-3 text-sm text-on-surface-variant">
