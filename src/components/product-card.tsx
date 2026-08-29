@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Product } from "@/data/products";
 import { formatPrice } from "@/lib/format";
 import { ProductImage } from "./product-image";
+import { Badge } from "./badge";
 import { useCart } from "./cart/cart-context";
 
 // Fond de card unique pour toute la grille. Les teintes dérivées de
@@ -58,14 +59,14 @@ export function ProductCard({
       >
         <ProductImage product={product} priority={priority} />
         {product.badge && (
-          <span className="absolute left-3 top-3 rounded-full bg-tertiary-container px-3 py-1 label-lg font-bold text-on-tertiary-container shadow-e1">
+          <Badge variant="accent" className="absolute left-3 top-3">
             {product.badge}
-          </span>
+          </Badge>
         )}
         {soldOut && (
-          <span className="absolute left-3 top-3 rounded-full bg-black px-3 py-1.5 label-lg font-bold uppercase tracking-wide text-white shadow-e2">
+          <Badge variant="soon" className="absolute left-3 top-3">
             Bientôt
-          </span>
+          </Badge>
         )}
       </Link>
 

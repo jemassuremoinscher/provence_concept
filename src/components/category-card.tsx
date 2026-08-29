@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Badge } from "./badge";
 import { Category, productsByCategory } from "@/data/products";
 
 const COPY: Record<Category, { title: string; sub: string }> = {
@@ -34,9 +35,9 @@ export function CategoryCard({ category }: { category: Category }) {
       />
       <div className="relative">
         {comingSoon && (
-          <span className="mb-2 inline-block rounded-full bg-on-surface/85 px-2.5 py-0.5 label-md font-bold uppercase tracking-wide text-surface-lowest">
+          <Badge variant="soon" className="mb-2 inline-block">
             Bientôt
-          </span>
+          </Badge>
         )}
         <h3 className="title-lg text-2xl">{title}</h3>
         <p className="mt-1 text-sm opacity-80">{sub}</p>
