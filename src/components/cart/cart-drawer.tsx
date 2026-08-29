@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "./cart-context";
 import { formatPrice } from "@/lib/format";
@@ -8,6 +9,56 @@ import { Button } from "../ui/button";
 
 export function CartDrawer() {
   const { open, setOpen, lines, subtotal, count, setQty, remove, keyOf } = useCart();
+  const panelRef = useRef<HTMLElement | null>(null);
+
+  // Même précaution que dans `size-guide` : la fermeture passe par une ref pour
+  // que l'effet ne dépende que de `open`. S'il rejouait à chaque rendu, son
+  // nettoyage relirait un `overflow` déjà à "hidden" et laisserait la page
+  // verrouillée après fermeture du panier.
+  const closeRef = useRef(() => setOpen(false));
+  closeRef.current = () => setOpen(false);
+
+  /* Échap ferme, le scroll de la page est verrouillé, et le focus reste piégé
+     dans le panneau tant qu'il est ouvert. Le focus revient à son point de
+     départ à la fermeture. */
+  useEffect(() => {
+    if (!open) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        closeRef.current();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const panel = panelRef.current;
+      if (!panel) return;
+      const focusable = panel.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    panelRef.current?.focus();
+
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previous;
+      previouslyFocused?.focus?.();
+    };
+  }, [open]);
 
   return (
     <AnimatePresence>
@@ -22,9 +73,12 @@ export function CartDrawer() {
             onClick={() => setOpen(false)}
           />
           <motion.aside
+            ref={panelRef}
+            tabIndex={-1}
             role="dialog"
+            aria-modal="true"
             aria-label="Panier"
-            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-[440px] flex-col bg-surface-lowest shadow-e4 sm:rounded-l-2xl"
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-[440px] flex-col bg-surface-lowest shadow-e4 outline-none sm:rounded-l-2xl"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
