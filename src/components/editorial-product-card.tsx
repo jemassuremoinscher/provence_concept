@@ -1,57 +1,126 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Product } from "@/data/products";
 import { formatPrice } from "@/lib/format";
 import { ProductImage } from "./product-image";
+import { useCart } from "./cart/cart-context";
 import { Badge } from "./badge";
 
-// Card éditoriale pour la grille asymétrique de la home (redesign 2026) :
-// grande photo, dégradé bas, infos superposées en blanc. Volontairement
-// sans sélecteur de taille inline — c'est une vitrine de découverte, l'ajout
-// rapide reste le rôle de `ProductCard` sur /boutique et les autres grilles.
 export function EditorialProductCard({
   product,
-  priority = false,
   className = "",
+  priority = false,
 }: {
   product: Product;
-  priority?: boolean;
   className?: string;
+  priority?: boolean;
 }) {
-  const soldOut = product.comingSoon;
+  const { add } = useCart();
+  const [step, setStep] = useState<"idle" | "picking" | "added">("idle");
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (step !== "picking") return;
+    function onClickOutside(e: MouseEvent) {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
+        setStep("idle");
+      }
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [step]);
+
+  function handleAddClick() {
+    if (step === "idle") setStep("picking");
+  }
+
+  function handleSizePick(size: string) {
+    add(product, { size, color: product.colors[0]?.name });
+    setStep("added");
+    setTimeout(() => setStep("idle"), 1200);
+  }
 
   return (
-    <Link
-      href={`/produit/${product.slug}`}
-      className={`state group relative block h-full min-h-[220px] overflow-hidden rounded-2xl shadow-e1 transition-shadow duration-300 ease-emphasized hover:shadow-e3 ${className}`}
-    >
-      <ProductImage product={product} priority={priority} />
+    <article className={`group relative min-h-[220px] overflow-hidden rounded-[20px] bg-surface-lowest ${className}`}>
+      {/* Photo — cible de clic principale, en absolute pour ne pas englober les éléments interactifs */}
+      <Link
+        href={`/produit/${product.slug}`}
+        className="absolute inset-0 z-0"
+        aria-label={product.name}
+      >
+        <ProductImage product={product} priority={priority} />
+      </Link>
 
-      {/* Dégradé bas pour la lisibilité du texte superposé */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-hero-deep/90 via-hero-deep/25 to-transparent"
-      />
+      {/* Dégradé — décoratif, ne doit jamais intercepter les clics */}
+      <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-hero-deep/90 via-hero-deep/25 to-transparent" />
 
-      {product.badge && (
-        <Badge variant="accent" className="absolute left-3 top-3">
-          {product.badge}
-        </Badge>
+      {/* Badge — décoratif, au-dessus du dégradé */}
+      {(product.badge || product.comingSoon) && (
+        <div className="pointer-events-none absolute left-4 top-4 z-20">
+          {product.comingSoon ? (
+            <Badge variant="soon">Bientôt</Badge>
+          ) : (
+            <Badge variant="accent">{product.badge}</Badge>
+          )}
+        </div>
       )}
-      {soldOut && (
-        <Badge variant="soon" className="absolute left-3 top-3">
-          Bientôt
-        </Badge>
-      )}
 
-      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-        <p className="card-name-serif body-lg text-white">{product.name}</p>
-        <p className="mt-0.5 text-sm text-white/70">{product.tagline}</p>
-        {product.price != null && (
-          <p className="body-lg mt-1.5 font-semibold text-white">
-            {formatPrice(product.price)}
-          </p>
+      {/* Infos superposées — au-dessus du dégradé, interactives sélectivement */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-5" ref={wrapRef}>
+        <Link
+          href={`/produit/${product.slug}`}
+          className="pointer-events-auto title-sm block text-white hover:underline"
+        >
+          {product.name}
+        </Link>
+        <p className="pointer-events-none mt-1 body-sm text-white/70">
+          {product.tagline}
+        </p>
+
+        <div className="mt-3 flex items-center justify-between gap-2">
+          {product.price != null ? (
+            <span className="pointer-events-none body-lg font-semibold text-white">
+              {formatPrice(product.price)}
+            </span>
+          ) : (
+            <span className="pointer-events-none body-sm text-white/70">Prix à venir</span>
+          )}
+
+          {!product.comingSoon && product.price != null && (
+            <button
+              onClick={handleAddClick}
+              className={`pointer-events-auto state h-8 rounded-full px-4 label-lg font-semibold transition-colors ${
+                step === "added"
+                  ? "bg-green-600 text-white"
+                  : "bg-white text-hero-deep"
+              }`}
+              aria-label={
+                step === "picking"
+                  ? "Choisir une taille"
+                  : `Ajouter ${product.name} au panier`
+              }
+            >
+              {step === "added" ? "Ajouté ✓" : "Ajouter"}
+            </button>
+          )}
+        </div>
+
+        {step === "picking" && (
+          <div className="pointer-events-auto mt-2 flex flex-wrap gap-1.5">
+            {product.sizes.map((size) => (
+              <button
+                key={size}
+                onClick={() => handleSizePick(size)}
+                className="state h-8 min-w-[36px] rounded-lg bg-white/95 px-2 label-md font-medium text-hero-deep transition-colors hover:bg-white"
+              >
+                {size}
+              </button>
+            ))}
+          </div>
         )}
       </div>
-    </Link>
+    </article>
   );
 }
