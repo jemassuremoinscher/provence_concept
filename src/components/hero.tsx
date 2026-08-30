@@ -93,6 +93,12 @@ export function Hero() {
             <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </a>
+
+        {/* Mention de transparence — visuel de synthèse, pas une photo.
+            Discrète mais lisible, sur toutes les tailles d'écran. */}
+        <span className="absolute bottom-3 right-0 text-[10px] text-white/40">
+          Visuel généré par IA
+        </span>
       </div>
 
       {/* Marquee défilant — remplace la bande de confiance statique */}
