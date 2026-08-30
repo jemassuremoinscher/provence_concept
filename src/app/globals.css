@@ -52,9 +52,14 @@
   --error-container: #ffdad6;
   --on-error-container: #410002;
 
-  /* Hero — dégradé de marque, hors rampe de surfaces */
-  --hero-accent: #7bbfed;
-  --hero-deep: #0e3d6b;
+  /* Hero — dégradé de marque, hors rampe de surfaces.
+     Triplet RGB (pas un hex) : c'est le format qu'attend le motif Tailwind
+     `rgb(var(--x) / <alpha-value>)` posé dans tailwind.config.ts — sans lui,
+     les classes `from-hero-deep/90`, `via-hero-accent/50`, etc. ne génèrent
+     aucune règle CSS (constaté sur le dégradé du hero puis de la card
+     éditoriale : `background-image` retombait à `none`, pas juste dégradé). */
+  --hero-accent-rgb: 123 191 237; /* #7bbfed */
+  --hero-deep-rgb: 14 61 107; /* #0e3d6b */
 
   /* Motion */
   --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);

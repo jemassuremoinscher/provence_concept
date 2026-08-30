@@ -11,8 +11,10 @@ const config: Config = {
         "primary-container": "var(--primary-container)",
         "on-primary-container": "var(--on-primary-container)",
         brand: "var(--brand)",
-        "hero-accent": "var(--hero-accent)",
-        "hero-deep": "var(--hero-deep)",
+        // Triplet RGB + `<alpha-value>` : seul format qui laisse Tailwind
+        // générer les variantes d'opacité (`from-hero-deep/90`, etc.).
+        "hero-accent": "rgb(var(--hero-accent-rgb) / <alpha-value>)",
+        "hero-deep": "rgb(var(--hero-deep-rgb) / <alpha-value>)",
         secondary: "var(--secondary)",
         "on-secondary": "var(--on-secondary)",
         "secondary-container": "var(--secondary-container)",

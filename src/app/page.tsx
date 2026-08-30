@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/reveal";
 import { ProductCard } from "@/components/product-card";
+import { EditorialProductCard } from "@/components/editorial-product-card";
 import { Hero } from "@/components/hero";
 import { COLLECTIONS, getProductsByCollection } from "@/data/products";
 
@@ -15,6 +16,12 @@ export default function HomePage() {
           // Home : une rangée pleine (4 colonnes) par collection.
           // La liste complète est sur /boutique via « Tout voir → ».
           const items = getProductsByCollection(col.id).slice(0, 4);
+          // Grille éditoriale asymétrique réservée aux collections dont les 4
+          // premiers produits sont réellement vendables (photo + prix) — pas
+          // un id de collection en dur, pour rester correct si le catalogue
+          // évolue. Les collections encore comingSoon gardent la grille
+          // classique en repli.
+          const isEditorial = items.length === 4 && items.every((p) => !p.comingSoon);
           return (
             <section key={col.id}>
               {/* En-tête collection */}
@@ -42,7 +49,40 @@ export default function HomePage() {
               </div>
 
               {/* Grille produits */}
-              {items.length > 0 ? (
+              {isEditorial ? (
+                // Bento asymétrique : 1 grand format (2 rangées) + 2 normaux
+                // + 1 large (2 colonnes) sur 3 colonnes / 2 rangées. En
+                // colonne unique sous sm, comme le hero — même logique de
+                // repli mobile.
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:grid-rows-2 sm:gap-5">
+                  <Reveal className="sm:col-span-1 sm:row-span-2 sm:h-full">
+                    <EditorialProductCard
+                      product={items[0]}
+                      priority
+                      className="aspect-[4/5] sm:aspect-auto sm:h-full"
+                    />
+                  </Reveal>
+                  <Reveal delay={0.05} className="sm:h-full">
+                    <EditorialProductCard
+                      product={items[1]}
+                      priority
+                      className="aspect-[4/5] sm:aspect-auto sm:h-full"
+                    />
+                  </Reveal>
+                  <Reveal delay={0.1} className="sm:h-full">
+                    <EditorialProductCard
+                      product={items[2]}
+                      className="aspect-[4/5] sm:aspect-auto sm:h-full"
+                    />
+                  </Reveal>
+                  <Reveal delay={0.15} className="sm:col-span-2 sm:h-full">
+                    <EditorialProductCard
+                      product={items[3]}
+                      className="aspect-[4/5] sm:aspect-auto sm:h-full"
+                    />
+                  </Reveal>
+                </div>
+              ) : items.length > 0 ? (
                 <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
                   {items.map((product, i) => (
                     <Reveal key={product.id} delay={(i % 4) * 0.05}>
