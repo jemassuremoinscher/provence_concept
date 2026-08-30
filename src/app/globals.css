@@ -192,6 +192,32 @@ body {
 }
 .pc-blob { animation: pc-blob 14s ease-in-out infinite; }
 
+/* Marquee du hero — bande défilante en boucle continue. Contenu dupliqué une
+   fois ; la translation de -50% correspond exactement à la largeur d'un jeu,
+   ce qui fait la boucle sans saut visible. `prefers-reduced-motion` est déjà
+   couvert par la règle globale plus bas (durée d'animation écrasée à 0). */
+@keyframes pc-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.pc-marquee-track {
+  animation: pc-marquee 26s linear infinite;
+}
+.pc-marquee-track:hover,
+.pc-marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+/* Repère de scroll du hero plein écran — invite discrète, amplitude réduite
+   par rapport au blob décoratif. */
+@keyframes pc-scroll-hint {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+.pc-scroll-hint {
+  animation: pc-scroll-hint 1.8s ease-in-out infinite;
+}
+
 /* Entrance reveal — pure CSS, only active once JS confirms (.js on <html>).
    Without JS the rule never matches, so content is visible (SEO + a11y safe). */
 @keyframes pc-rise {

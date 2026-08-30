@@ -10,7 +10,7 @@ export default function HomePage() {
       <Hero />
 
       {/* ── Collections ── */}
-      <div className="shell mt-20 space-y-20">
+      <div id="collections" className="shell mt-20 space-y-20">
         {COLLECTIONS.map((col) => {
           // Home : une rangée pleine (4 colonnes) par collection.
           // La liste complète est sur /boutique via « Tout voir → ».

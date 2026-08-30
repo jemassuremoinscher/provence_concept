@@ -2,95 +2,105 @@ import Link from "next/link";
 import Image from "next/image";
 import { SELLABLE_COUNT } from "@/data/products";
 
+const MARQUEE_ITEMS = [
+  "Coton peigné 180 g/m²",
+  "Broderie poitrine",
+  "Séries courtes",
+  "Tailles S → XXL",
+  "Commander par e-mail",
+];
+
 export function Hero() {
   return (
-    <section className="shell pt-6 sm:pt-8">
-      {/* Hero card — deep navy, deux colonnes */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-[#0e3d6b] px-6 py-12 sm:px-12 sm:py-16 lg:py-20">
+    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-hero-deep">
+      {/* Photo plein cadre */}
+      <Image
+        src="/products/pan-bagnat-2.jpg"
+        alt="T-shirts brodés Provence Concept, pliés à côté d'un bouquet de lavande"
+        fill
+        sizes="100vw"
+        className="object-cover"
+        priority
+      />
 
-        {/* Blob décoratif */}
-        <div
-          aria-hidden
-          className="pc-blob absolute -right-24 -top-24 h-[420px] w-[420px] bg-white/10 blur-[2px]"
-        />
+      {/* Assombrissement pour la lisibilité du texte sur la photo */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-t from-hero-deep via-hero-deep/75 to-hero-deep/25"
+      />
 
-        {/* Grille : texte gauche + tee droit */}
-        <div className="relative grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      {/* Blob décoratif, conservé du hero précédent */}
+      <div
+        aria-hidden
+        className="pc-blob absolute -right-24 -top-24 h-[420px] w-[420px] bg-white/10 blur-[2px]"
+      />
 
-          {/* Colonne texte */}
-          <div className="max-w-xl">
-            <span className="eyebrow text-white/70">
-              Brodé · Séries courtes · Niçois &amp; Provençal
-            </span>
+      {/* Contenu, ancré en bas du cadre plein écran */}
+      <div className="shell relative flex flex-1 flex-col justify-end pb-16 pt-24 sm:pb-20">
+        <div className="max-w-xl">
+          <span className="eyebrow text-white/70">
+            Brodé · Séries courtes · Niçois &amp; Provençal
+          </span>
 
-            {/* H1 en Lora */}
-            <h1 className="mt-4 font-serif text-4xl font-normal leading-[1.1] text-white sm:text-5xl lg:text-[3.25rem]">
-              Le Sud,{" "}
-              <em className="italic text-hero-accent">à porter.</em>
-            </h1>
+          {/* H1 en Lora, agrandi pour le format plein écran */}
+          <h1 className="mt-4 font-serif text-5xl font-normal leading-[1.05] text-white sm:text-6xl lg:text-[4.5rem]">
+            Le Sud,{" "}
+            <em className="italic text-hero-accent">à porter.</em>
+          </h1>
 
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-white/60">
-              Des t-shirts blancs brodés aux noms des spécialités niçoises —
-              pour ceux qui savent ce qu'est un barbajuan.
-            </p>
+          <p className="body-lg mt-5 max-w-md text-white/70">
+            Des t-shirts blancs brodés aux noms des spécialités niçoises —
+            pour ceux qui savent ce qu'est un barbajuan.
+          </p>
 
-            {/* CTAs */}
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link
-                href="/boutique"
-                className="state inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-hero-deep"
-              >
-                Voir la collection
-              </Link>
-              <Link
-                href="/a-propos"
-                className="state inline-flex h-11 items-center justify-center rounded-full border border-white/25 px-6 text-sm font-medium text-white/80"
-              >
-                Notre histoire
-              </Link>
-            </div>
-
-            {/* Méta */}
-            <p className="mt-6 text-xs text-white/35">
-              {SELLABLE_COUNT} pièces · Tailles S à XXL · Édition continue
-            </p>
+          {/* CTAs */}
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              href="/boutique"
+              className="state inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-hero-deep"
+            >
+              Voir la collection
+            </Link>
+            <Link
+              href="/a-propos"
+              className="state inline-flex h-11 items-center justify-center rounded-full border border-white/25 px-6 text-sm font-medium text-white/80"
+            >
+              Notre histoire
+            </Link>
           </div>
 
-          {/* Colonne visuel — photo pan bagnat / lavande */}
-          <div className="hidden lg:flex lg:items-center lg:justify-center">
-            <div className="relative aspect-square w-full max-w-[360px] overflow-hidden rounded-2xl shadow-e2 ring-1 ring-white/15">
-              <Image
-                src="/products/pan-bagnat-2.jpg"
-                alt="T-shirts brodés Provence Concept, pliés à côté d'un bouquet de lavande"
-                fill
-                sizes="(max-width:1024px) 0px, 360px"
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
-
+          {/* Méta */}
+          <p className="label-md mt-6 text-white/40">
+            {SELLABLE_COUNT} pièces · Tailles S à XXL · Édition continue
+          </p>
         </div>
+
+        {/* Repère de scroll — indispensable puisque rien du catalogue n'est
+            visible sans défiler sur ce hero plein écran. Lien natif vers
+            #collections : fonctionne sans JS, s'appuie sur le scroll-behavior
+            smooth déjà global au site. */}
+        <a
+          href="#collections"
+          className="state pc-scroll-hint absolute bottom-4 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 rounded-full px-3 py-2 text-white/60 hover:text-white/90 sm:flex"
+        >
+          <span className="label-sm uppercase tracking-wide">Scroll</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
       </div>
 
-      {/* Bande de confiance */}
-      <div className="trust-strip mt-0 overflow-x-auto">
-        <div className="flex min-w-max items-center gap-8 px-6 py-3 sm:px-12">
-          {[
-            "Coton peigné 180 g/m²",
-            "Broderie poitrine",
-            "Séries courtes",
-            "Tailles S → XXL",
-            "Commander par e-mail",
-          ].map((item) => (
+      {/* Marquee défilant — remplace la bande de confiance statique */}
+      <div className="relative overflow-hidden border-t border-white/10 bg-hero-deep/80 backdrop-blur-sm">
+        <div className="pc-marquee-track flex w-max items-center py-3">
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
             <span
-              key={item}
-              className="flex items-center gap-2 whitespace-nowrap text-xs font-medium"
-              style={{ color: "var(--trust-text)" }}
+              key={i}
+              aria-hidden={i >= MARQUEE_ITEMS.length}
+              className="label-md flex items-center gap-2 whitespace-nowrap px-6 text-white/70"
             >
               <span
-                className="h-1.5 w-1.5 rounded-full flex-shrink-0"
-                style={{ background: "var(--brand)" }}
+                className="h-1.5 w-1.5 shrink-0 rounded-full bg-hero-accent"
                 aria-hidden
               />
               {item}
