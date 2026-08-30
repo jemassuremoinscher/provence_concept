@@ -15,11 +15,16 @@ export function Hero() {
     <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-hero-deep">
       {/* Photo plein cadre */}
       <Image
-        src="/products/pan-bagnat-2.jpg"
-        alt="T-shirts brodés Provence Concept, pliés à côté d'un bouquet de lavande"
+        src="/hero-mere-fils.jpg"
+        alt="Une mère et son fils face à la mer, en t-shirt et sweatshirt Provence Concept brodés"
         fill
         sizes="100vw"
-        className="object-cover"
+        // La photo est très panoramique (2,36:1) : en `cover` plein cadre sur
+        // un écran portrait, moins de 20 % de sa largeur reste visible — pas
+        // de recadrage qui garde la mère, le fils ET les deux broderies. En
+        // `contain` sous `sm`, l'image entière reste visible (letterboxée sur
+        // le fond du hero) ; au-delà, `cover` reprend pour le plein cadre.
+        className="object-contain sm:object-cover"
         priority
       />
 
