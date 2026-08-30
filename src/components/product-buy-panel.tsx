@@ -33,14 +33,22 @@ export function ProductBuyPanel({ product }: { product: Product }) {
         <div className="flex flex-wrap gap-2.5">
           {product.colors.map((c) => {
             const active = c.name === color;
+            // Certaines couleurs (ex. "Blanc" / "Blanc — broderie ton sur ton")
+            // partagent le même hex : la pastille seule ne les distingue pas,
+            // d'où le contour pointillé pour signaler la variante avant le clic.
+            const isToneOnTone = c.name.includes("ton sur ton");
             return (
               <button
-                key={c.hex}
+                key={c.name}
                 onClick={() => setColor(c.name)}
                 aria-label={c.name}
                 aria-pressed={active}
                 className={`grid h-10 w-10 place-items-center rounded-full transition-all duration-200 ease-emphasized ${
-                  active ? "ring-2 ring-primary ring-offset-2 ring-offset-surface" : "ring-1 ring-outline-variant"
+                  active
+                    ? "ring-2 ring-primary ring-offset-2 ring-offset-surface"
+                    : isToneOnTone
+                    ? "border-2 border-dashed border-outline"
+                    : "ring-1 ring-outline-variant"
                 }`}
               >
                 <span className="h-7 w-7 rounded-full ring-1 ring-black/10" style={{ background: c.hex }} />
