@@ -322,7 +322,7 @@ export const PRODUCTS: Product[] = [
     colors: [
       { name: "Blanc", hex: "#f4f3ee", image: "/products/moule-frites-addict-polo-blanc.jpg" },
       { name: "Blanc — broderie ton sur ton", hex: "#f4f3ee", image: "/products/moule-frites-addict-polo-blanc-ecriture-blanche.jpg" },
-      { name: "Bleu marine", hex: "#1B2A4A", image: "/products/moule-frites-addict-polo-bleu-marine.jpg" },
+      { name: "Bleu ciel", hex: "#87CEEB", image: "/products/moule-frites-addict-polo-bleu-marine.jpg" },
       { name: "Gris", hex: "#8C8C8C", image: "/products/moule-frites-addict-polo-gris.jpg" },
       { name: "Noir", hex: "#1A1A1A", image: "/products/moule-frites-addict-polo-noir.jpg" },
       { name: "Rouge", hex: "#B23A2E", image: "/products/moule-frites-addict-polo-rouge.jpg" },
@@ -346,7 +346,7 @@ export const PRODUCTS: Product[] = [
     colors: [
       { name: "Blanc", hex: "#f4f3ee", image: "/products/moule-frites-addict-sweat-blanc.jpg" },
       { name: "Blanc — broderie ton sur ton", hex: "#f4f3ee", image: "/products/moule-frites-addict-sweat-blanc-ecriture-blanche.jpg" },
-      { name: "Bleu marine", hex: "#1B2A4A", image: "/products/moule-frites-addict-sweat-bleu-marine.jpg" },
+      { name: "Bleu ciel", hex: "#87CEEB", image: "/products/moule-frites-addict-sweat-bleu-marine.jpg" },
       { name: "Gris", hex: "#8C8C8C", image: "/products/moule-frites-addict-sweat-gris.jpg" },
       { name: "Noir", hex: "#1A1A1A", image: "/products/moule-frites-addict-sweat-noir.jpg" },
       { name: "Rouge", hex: "#B23A2E", image: "/products/moule-frites-addict-sweat-rouge.jpg" },
