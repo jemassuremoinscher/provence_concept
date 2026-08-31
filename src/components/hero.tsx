@@ -12,36 +12,41 @@ const MARQUEE_ITEMS = [
 
 export function Hero() {
   return (
-    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-hero-deep">
-      {/* Photo plein cadre */}
-      <Image
-        src="/hero-mere-fils.jpg"
-        alt="Une mère et son fils face à la mer, en t-shirt et sweatshirt Provence Concept brodés"
-        fill
-        sizes="100vw"
-        // La photo est très panoramique (2,36:1) : en `cover` plein cadre sur
-        // un écran portrait, moins de 20 % de sa largeur reste visible — pas
-        // de recadrage qui garde la mère, le fils ET les deux broderies. En
-        // `contain` sous `sm`, l'image entière reste visible (letterboxée sur
-        // le fond du hero) ; au-delà, `cover` reprend pour le plein cadre.
-        className="object-contain sm:object-cover"
-        priority
-      />
+    <section className="relative isolate flex flex-col overflow-hidden bg-hero-deep sm:min-h-[100svh]">
+      {/* Photo — sur mobile, une boîte au ratio réel de l'image (2,36:1) en
+          flux normal : `cover` ne recadre alors plus rien du tout (le cadre
+          a exactement la forme de la photo), donc ni vide au-dessus ni
+          personnage coupé. À partir de `sm`, la boîte repasse en plein cadre
+          absolu pour l'immersion plein écran du desktop. */}
+      <div className="relative aspect-[1589/672] w-full shrink-0 sm:absolute sm:inset-0 sm:aspect-auto sm:h-full">
+        <Image
+          src="/hero-mere-fils.jpg"
+          alt="Une mère et son fils face à la mer, en t-shirt et sweatshirt Provence Concept brodés"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
 
-      {/* Assombrissement pour la lisibilité du texte sur la photo */}
+        {/* Assombrissement pour la lisibilité du texte sur la photo (desktop
+            uniquement : sur mobile le texte suit en dessous, pas de scrim
+            nécessaire — juste un léger fondu bas pour la mention IA). */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-hero-deep/50 to-transparent sm:from-hero-deep sm:via-hero-deep/75 sm:to-hero-deep/25"
+        />
+      </div>
+
+      {/* Blob décoratif — plein cadre desktop uniquement ; sur mobile la
+          boîte photo est courte et normale, le blob n'a plus sa place. */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-hero-deep via-hero-deep/75 to-hero-deep/25"
+        className="pc-blob absolute -right-24 -top-24 hidden h-[420px] w-[420px] bg-white/10 blur-[2px] sm:block"
       />
 
-      {/* Blob décoratif, conservé du hero précédent */}
-      <div
-        aria-hidden
-        className="pc-blob absolute -right-24 -top-24 h-[420px] w-[420px] bg-white/10 blur-[2px]"
-      />
-
-      {/* Contenu, ancré en bas du cadre plein écran */}
-      <div className="shell relative flex flex-1 flex-col justify-end pb-16 pt-24 sm:pb-20">
+      {/* Contenu : flux normal sous la photo sur mobile, overlay ancré en bas
+          du cadre plein écran à partir de sm. */}
+      <div className="shell relative flex flex-col justify-end py-8 sm:flex-1 sm:pb-20 sm:pt-24">
         <div className="max-w-xl">
           <span className="eyebrow text-white/70">
             Brodé · Séries courtes · Niçois &amp; Provençal
