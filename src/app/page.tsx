@@ -16,12 +16,12 @@ export default function HomePage() {
           // Home : une rangée pleine (4 colonnes) par collection.
           // La liste complète est sur /boutique via « Tout voir → ».
           const items = getProductsByCollection(col.id).slice(0, 4);
-          // Grille éditoriale asymétrique réservée aux collections dont les 4
-          // premiers produits sont réellement vendables (photo + prix) — pas
-          // un id de collection en dur, pour rester correct si le catalogue
-          // évolue. Les collections encore comingSoon gardent la grille
-          // classique en repli.
-          const isEditorial = items.length === 4 && items.every((p) => !p.comingSoon);
+          // Grille éditoriale asymétrique sur toutes les collections qui ont
+          // 4 produits pleins (elle suppose 4 cases précises) — comingSoon
+          // ou non, chaque produit porte déjà son badge « Bientôt ». Une
+          // collection avec moins de 4 produits garde la grille classique en
+          // repli, la mise en page bento ne pouvant pas se réduire proprement.
+          const isEditorial = items.length === 4;
           return (
             <section key={col.id}>
               {/* En-tête collection */}
