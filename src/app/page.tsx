@@ -122,8 +122,8 @@ export default function HomePage() {
         <div className="shell grid gap-6 py-10 sm:grid-cols-[3px_1fr_1fr] sm:gap-8 sm:py-12">
           <div className="hidden sm:block rounded-full bg-primary" />
           <blockquote className="font-serif text-lg font-normal italic leading-relaxed text-on-surface sm:text-xl">
-            "Il y a des soirs à Dubaï où ce qui manque, c'est une socca
-            brûlante et le bruit du marché de Nice."
+            "Il y a des soirs au bout du monde où ce qui manque, c'est
+            une socca brûlante et le bruit du marché de Nice."
           </blockquote>
           <div className="flex flex-col justify-center gap-4">
             <p className="text-sm leading-relaxed text-on-surface-variant">
