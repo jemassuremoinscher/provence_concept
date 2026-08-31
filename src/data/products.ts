@@ -844,8 +844,32 @@ export function productsByCategory(cat: Category): Product[] {
   return PRODUCTS.filter((p) => p.category === cat);
 }
 
+const CATEGORY_ORDER: Record<Category, number> = {
+  "t-shirts": 0,
+  polos: 1,
+  sweatshirts: 2,
+};
+
 // Retourne toute la collection, `comingSoon` compris : les cards à venir sont
 // rendues avec le badge « Bientôt » et sans bouton d'achat (voir ProductCard).
+//
+// Tri : d'abord regroupées par `design` (un même motif décliné en t-shirt/
+// polo/sweat reste groupé — cf. `ProductFormatLinks`, qui utilise le même
+// champ) ; les produits sans `design` restent seuls dans leur propre groupe.
+// L'ordre des groupes suit leur première apparition dans `PRODUCTS`. À
+// l'intérieur d'un groupe, les formats sont triés t-shirt > polo > sweatshirt.
 export function getProductsByCollection(collection: Collection): Product[] {
-  return PRODUCTS.filter((p) => p.collection === collection);
+  const items = PRODUCTS.filter((p) => p.collection === collection);
+
+  const groups = new Map<string, Product[]>();
+  for (const p of items) {
+    const key = p.design ?? p.id;
+    const group = groups.get(key);
+    if (group) group.push(p);
+    else groups.set(key, [p]);
+  }
+
+  return [...groups.values()].flatMap((group) =>
+    [...group].sort((a, b) => CATEGORY_ORDER[a.category] - CATEGORY_ORDER[b.category])
+  );
 }
